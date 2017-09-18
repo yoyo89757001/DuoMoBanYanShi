@@ -5,17 +5,22 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 
+import com.example.xiaojun.duomobanyanshi.interfaces.RecytviewCash;
+
 /**
  * Created by Administrator on 2017/6/29.
  */
 
 public class WrapContentLinearLayoutManager extends LinearLayoutManager {
+    private RecytviewCash recytviewCash;
     public WrapContentLinearLayoutManager(Context context) {
         super(context);
     }
 
-    public WrapContentLinearLayoutManager(Context context, int orientation, boolean reverseLayout) {
+    public WrapContentLinearLayoutManager(Context context, int orientation, boolean reverseLayout,RecytviewCash recytviewCash) {
+
         super(context, orientation, reverseLayout);
+        this.recytviewCash=recytviewCash;
     }
 
     public WrapContentLinearLayoutManager(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
@@ -27,7 +32,7 @@ public class WrapContentLinearLayoutManager extends LinearLayoutManager {
         try {
             super.onLayoutChildren(recycler, state);
         } catch (IndexOutOfBoundsException e) {
-            e.printStackTrace();
+            recytviewCash.reset();
         }
     }
 }

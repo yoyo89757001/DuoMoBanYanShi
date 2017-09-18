@@ -69,6 +69,7 @@ import com.example.xiaojun.duomobanyanshi.beans.TuPianBean;
 import com.example.xiaojun.duomobanyanshi.beans.User;
 import com.example.xiaojun.duomobanyanshi.beans.WBBean;
 import com.example.xiaojun.duomobanyanshi.beans.WeiShiBieBean;
+import com.example.xiaojun.duomobanyanshi.interfaces.RecytviewCash;
 import com.example.xiaojun.duomobanyanshi.media.IjkVideoView;
 import com.example.xiaojun.duomobanyanshi.media.Settings;
 import com.example.xiaojun.duomobanyanshi.utils.DateUtils;
@@ -126,7 +127,7 @@ import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
 
-public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerListener {
+public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerListener,RecytviewCash {
 	private IVLCVout vlcVout=null;
 	private MediaPlayer mediaPlayer=null;
 	private final static String TAG = "VlcVideoActivity";
@@ -170,13 +171,13 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 	private static List<String> photoPathList=new ArrayList<>();
 //	private static Vector<YongHuBean> moShengRenBean2List=new Vector<>();
 	private WrapContentLinearLayoutManager manager;
-	private ScrollSpeedLinearLayoutManger manager2;
+	private WrapContentLinearLayoutManager manager2;
 	//private GridLayoutManager gridLayoutManager;
 	private WebSocketClient webSocketClient=null;
 	private static int shiPingCount=0;
 	private Runnable runnable=null;
 	private Handler conntionHandler=null;
-	public static String zhuji_string=null,shiping_string=null;
+	//public static String zhuji_string=null,shiping_string=null;
 	private int w,h;
 	private ShiPingBeanDao shiPingBeanDao=null;
 	//private TextView textView;
@@ -194,7 +195,7 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 	private static int Video_index = 0;
 	//private RollPagerView rollPagerView=null;
 	private  static Vector<TanChuangBean> tanchuangList=null;
-	private  static Vector<ShiBieJiLuBean> shiBieJiLuList=null;
+	private  static Vector<TanChuangBean> yuangongList=null;
 	private int dw,dh;
 	private BaoCunBeanDao baoCunBeanDao=null;
 	private BaoCunBean baoCunBean=null;
@@ -231,22 +232,22 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 			switch (msg.what){
 				case 111:
 					//更新地址
-					try {
-
-						WebsocketPushMsg websocketPushMsg=new WebsocketPushMsg();
-						if (zhuji_string!=null && shiping_string!=null){
-
-							websocketPushMsg.startConnection(zhuji_string,shiping_string);
-						}else {
-
-							TastyToast.makeText(VlcVideoActivity.this, "请先设置主机和视频流", Toast.LENGTH_LONG,TastyToast.ERROR).show();
-
-						}
-
-					} catch (URISyntaxException e ) {
-
-						Log.d(TAG, e.getMessage());
-					}
+//					try {
+//
+//						WebsocketPushMsg websocketPushMsg=new WebsocketPushMsg();
+//						if (zhuji_string!=null && shiping_string!=null){
+//
+//							websocketPushMsg.startConnection(zhuji_string,shiping_string);
+//						}else {
+//
+//							TastyToast.makeText(VlcVideoActivity.this, "请先设置主机和视频流", Toast.LENGTH_LONG,TastyToast.ERROR).show();
+//
+//						}
+//
+//					} catch (URISyntaxException e ) {
+//
+//						Log.d(TAG, e.getMessage());
+//					}
 
 					break;
 				case 110:
@@ -281,10 +282,10 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 					break;
 				case 19: //更新识别记录
 					Log.d(TAG, "19");
-					int size=shiBieJiLuList.size();
 
-					adapter2.notifyItemInserted(size-1);
-					manager2.smoothScrollToPosition(recyclerView2,null,size-1);
+
+					//adapter2.notifyItemInserted(size-1);
+					//manager2.smoothScrollToPosition(recyclerView2,null,size-1);
 
 					break;
 
@@ -546,8 +547,36 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 		toPrint("onError error=" + "(" + error.code + ")" + error.description + "--utteranceId=" + utteranceId);
 	}
 
+	@Override
+	public void reset() {
+		//数据重置
+		yuangongList.clear();
+		tanchuangList.clear();
+		adapter.notifyDataSetChanged();
+		adapter2.notifyDataSetChanged();
 
 
+		TanChuangBean bean=new TanChuangBean();
+		bean.setBytes(null);
+		bean.setName(null);
+		bean.setType(-2);
+		bean.setTouxiang(null);
+		tanchuangList.add(bean);
+
+		TanChuangBean bean3=new TanChuangBean();
+		bean3.setBytes(null);
+		bean3.setName(null);
+		bean3.setType(-2);
+		bean3.setTouxiang(null);
+		yuangongList.add(bean3);
+
+		TanChuangBean bean4=new TanChuangBean();
+		bean4.setBytes(null);
+		bean4.setName(null);
+		bean4.setType(-2);
+		bean4.setTouxiang(null);
+		yuangongList.add(bean4);
+	}
 
 
 	private class TestLoopAdapter extends LoopPagerAdapter {
@@ -632,7 +661,8 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 		setContentView(R.layout.activity_video_vlc);
 
 		if (baoCunBean!=null && baoCunBean.getIsHengOrShu()){
-			isHX=true;
+            Log.d(TAG, "横屏");
+            isHX=true;
 			/**
 			 * 设置为横屏
 			 */
@@ -647,7 +677,7 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 			 */
 			if(this.getResources().getConfiguration().orientation != Configuration.ORIENTATION_PORTRAIT){
 				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
+                Log.d(TAG, "竖屏");
 			}
 		}
 
@@ -671,7 +701,7 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 		IjkMediaPlayer.native_profileBegin("libijkplayer.so");
 
 		tanchuangList=new Vector<>();
-		shiBieJiLuList=new Vector<>();
+		yuangongList=new Vector<>();
 
 
 		linearLayout= (LinearLayout) findViewById(R.id.video_root);
@@ -726,43 +756,43 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 
 		recyclerView= (RecyclerView) findViewById(R.id.recyclerView);
 		recyclerView2= (RecyclerView) findViewById(R.id.recyclerView2);
-		recyclerView2.addOnScrollListener(new RecyclerView.OnScrollListener() {
-			//用来标记是否正在向最后一个滑动
-			boolean isSlidingToLast = false;
-
-			@Override
-			public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-				super.onScrollStateChanged(recyclerView, newState);
-				LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
-				// 当不滚动时
-				if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-					//获取最后一个完全显示的ItemPosition
-					int lastVisibleItem = manager.findLastCompletelyVisibleItemPosition();
-					int totalItemCount = manager.getItemCount();
-
-					// 判断是否滚动到底部，并且是向右滚动
-					if (lastVisibleItem == (totalItemCount - 1) && isSlidingToLast) {
-						//加载更多功能的代码
-						manager2.smoothScrollToPosition(recyclerView2,null,0);
-					}
-
-					if (lastVisibleItem==4 && !isSlidingToLast){
-						manager2.smoothScrollToPosition(recyclerView2,null,shiBieJiLuList.size()-1);
-					}
-
-				}
-			}
-
-			@Override
-			public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-				super.onScrolled(recyclerView, dx, dy);
-
-				//dx用来判断横向滑动方向，dy用来判断纵向滑动方向
-				//大于0表示正在向下滚动
-				//小于等于0表示停止或向上滚动
-				isSlidingToLast = dy > 0;
-			}
-		});
+//		recyclerView2.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//			//用来标记是否正在向最后一个滑动
+//			boolean isSlidingToLast = false;
+//
+//			@Override
+//			public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+//				super.onScrollStateChanged(recyclerView, newState);
+//				LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
+//				// 当不滚动时
+//				if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+//					//获取最后一个完全显示的ItemPosition
+//					int lastVisibleItem = manager.findLastCompletelyVisibleItemPosition();
+//					int totalItemCount = manager.getItemCount();
+//
+//					// 判断是否滚动到底部，并且是向右滚动
+//					if (lastVisibleItem == (totalItemCount - 1) && isSlidingToLast) {
+//						//加载更多功能的代码
+//						manager2.smoothScrollToPosition(recyclerView2,null,0);
+//					}
+//
+//					if (lastVisibleItem==4 && !isSlidingToLast){
+//						manager2.smoothScrollToPosition(recyclerView2,null,shiBieJiLuList.size()-1);
+//					}
+//
+//				}
+//			}
+//
+//			@Override
+//			public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//				super.onScrolled(recyclerView, dx, dy);
+//
+//				//dx用来判断横向滑动方向，dy用来判断纵向滑动方向
+//				//大于0表示正在向下滚动
+//				//小于等于0表示停止或向上滚动
+//				isSlidingToLast = dy > 0;
+//			}
+//		});
 
 		tianqi0= (TextView) findViewById(R.id.tianqi0);
 		tianqi1= (TextView) findViewById(R.id.tianqi1);
@@ -895,16 +925,16 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 //		File file=new File("mnt/usb_storage/USB_DISK1"+File.separator+"a1.mp4");
 //		Log.d(TAG, "file.length():" + file.length());
 
-		manager = new WrapContentLinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+		manager = new WrapContentLinearLayoutManager(VlcVideoActivity.this,LinearLayoutManager.VERTICAL, false,this);
 		recyclerView.setLayoutManager(manager);
 
-		manager2 = new ScrollSpeedLinearLayoutManger(VlcVideoActivity.this);
+		manager2 = new WrapContentLinearLayoutManager(VlcVideoActivity.this,LinearLayoutManager.HORIZONTAL, false,this);
 		manager2.setOrientation(LinearLayoutManager.VERTICAL);
 		recyclerView2.setLayoutManager(manager2);
 
 		adapter = new MyAdapter(R.layout.tanchuang_item2,tanchuangList);
 
-		adapter2 = new MyAdapter2(R.layout.shibiejilu_item,shiBieJiLuList);
+		adapter2 = new MyAdapter2(R.layout.shibiejilu_item,yuangongList);
 		//adapter.openLoadAnimation();
 		//adapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
 		recyclerView.setAdapter(adapter);
@@ -1344,16 +1374,16 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 
 
 
-	private  class MyAdapter2 extends BaseQuickAdapter<ShiBieJiLuBean,BaseViewHolder> {
+	private  class MyAdapter2 extends BaseQuickAdapter<TanChuangBean,BaseViewHolder> {
 
-		private MyAdapter2(int layoutResId, List<ShiBieJiLuBean> data) {
+		private MyAdapter2(int layoutResId, List<TanChuangBean> data) {
 			super(layoutResId, data);
 
 		}
 
 
 		@Override
-		protected void convert(BaseViewHolder helper, ShiBieJiLuBean item) {
+		protected void convert(BaseViewHolder helper, TanChuangBean item) {
 			//Log.d(TAG, "动画执行");
 			ViewAnimator
 					.animate(helper.itemView)
@@ -1369,12 +1399,12 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 			TextView time=helper.getView(R.id.time);
 		//	TextView autoScrollTextView=helper.getView(R.id.richeng);
 			miaoshu.setText(item.getName());
-			time.setText(item.getTimes());
 
-				if (item.getUrlPath()!=null){
+
+				if (item.getTouxiang()!=null){
 
 					Glide.with(MyApplication.getAppContext())
-							.load(zhuji+item.getUrlPath())
+							.load(zhuji+item.getTouxiang())
 							.transform(new GlideCircleTransform(MyApplication.getAppContext()))
 							.into((ImageView) helper.getView(R.id.touxiang));
 				}else {
@@ -1499,8 +1529,9 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 					//	if (!webSocketClient.isOpen()){
 					try {
 						WebsocketPushMsg websocketPushMsg = new WebsocketPushMsg();
-						if (zhuji_string != null && shiping_string != null) {
-							websocketPushMsg.startConnection(zhuji_string, shiping_string);
+						websocketPushMsg.close();
+						if (baoCunBean.getZhujiDiZhi() != null && baoCunBean.getShipingIP() != null) {
+							websocketPushMsg.startConnection(baoCunBean.getZhujiDiZhi(), baoCunBean.getShipingIP());
 						}
 						//恢复视频流
 						startActivity(new Intent(VlcVideoActivity.this, ErWeiMaActivity.class));
@@ -1515,46 +1546,48 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 					//Log.d(TAG, "收到更新地址广播");
 					String a = intent.getStringExtra("gxsp");
 					String b = intent.getStringExtra("gxzj");
-					if (!a.equals("")) {
-						shiping_string = a;
-						media = new Media(libvlc, Uri.parse(shiping_string));
-						mediaPlayer.setMedia(media);
-						mediaPlayer.play();
-						//mMediaPlayer.playMRL(shiping_string);
-						startActivity(new Intent(VlcVideoActivity.this, ErWeiMaActivity.class));
-					}
-					if (!b.equals("")) {
-
-						zhuji_string = b;
-						try {
-							String[] a1=zhuji_string.split("//");
-							String[] b1=a1[1].split(":");
-							zhuji="http://"+b1[0];
-
-							WebsocketPushMsg websocketPushMsg = new WebsocketPushMsg();
-							if (zhuji_string != null && shiping_string != null) {
-								websocketPushMsg.startConnection(zhuji_string, shiping_string);
-							}
-						} catch (URISyntaxException e) {
-							e.printStackTrace();
-
-						}
-
-					}
+//					if (!a.equals("")) {
+//						shiping_string = a;
+//						media = new Media(libvlc, Uri.parse(shiping_string));
+//						mediaPlayer.setMedia(media);
+//						mediaPlayer.play();
+//						//mMediaPlayer.playMRL(shiping_string);
+//						startActivity(new Intent(VlcVideoActivity.this, ErWeiMaActivity.class));
+//					}
+//					if (!b.equals("")) {
+//
+//						zhuji_string = b;
+//						try {
+//							String[] a1=zhuji_string.split("//");
+//							String[] b1=a1[1].split(":");
+//							zhuji="http://"+b1[0];
+//
+//							WebsocketPushMsg websocketPushMsg = new WebsocketPushMsg();
+//							if (zhuji_string != null && shiping_string != null) {
+//								websocketPushMsg.startConnection(zhuji_string, shiping_string);
+//							}
+//						} catch (URISyntaxException e) {
+//							e.printStackTrace();
+//
+//						}
+//
+//					}
 
 				}
 				if (intent.getAction().equals("shoudongshuaxin")) {
-					if (shiping_string != null && zhuji_string != null) {
+					baoCunBean=baoCunBeanDao.load(123456L);
+					if (baoCunBean.getShipingIP() != null && baoCunBean.getZhujiDiZhi() != null) {
 
-						media = new Media(libvlc, Uri.parse(shiping_string));
+						media = new Media(libvlc, Uri.parse(baoCunBean.getShipingIP()));
 						mediaPlayer.setMedia(media);
 						mediaPlayer.play();
 						//mLoadingView.setVisibility(View.GONE);
 
 						try {
 							WebsocketPushMsg websocketPushMsg = new WebsocketPushMsg();
-							if (zhuji_string != null && shiping_string != null) {
-								websocketPushMsg.startConnection(zhuji_string, shiping_string);
+							websocketPushMsg.close();
+							if (baoCunBean.getShipingIP() != null && baoCunBean.getZhujiDiZhi() != null) {
+								websocketPushMsg.startConnection(baoCunBean.getZhujiDiZhi(), baoCunBean.getShipingIP());
 							}
 						} catch (URISyntaxException e) {
 							e.printStackTrace();
@@ -1871,6 +1904,24 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 	protected void onResume() {
 		super.onResume();
 		baoCunBean=baoCunBeanDao.load(123456L);
+		if (baoCunBean!=null && baoCunBean.getZhujiDiZhi()!=null){
+			try {
+				String[] a1=baoCunBean.getZhujiDiZhi().split("//");
+				String[] b1=a1[1].split(":");
+				zhuji="http://"+b1[0];
+
+				WebsocketPushMsg websocketPushMsg = new WebsocketPushMsg();
+				websocketPushMsg.close();
+				if (baoCunBean.getShipingIP() != null ) {
+					websocketPushMsg.startConnection(baoCunBean.getZhujiDiZhi(), baoCunBean.getShipingIP());
+				}
+			} catch (URISyntaxException e) {
+				e.printStackTrace();
+
+			}
+		}
+
+
 		if (baoCunBean.getIsHengOrShu()!=isHX){
 			if (baoCunBean!=null && baoCunBean.getIsHengOrShu()){
 				isHX=true;
@@ -1943,8 +1994,8 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 		if (mediaPlayer != null) {
 
 			mSurfaceView.setKeepScreenOn(true);
-			if (shiping_string!=null){
-				media = new Media(libvlc, Uri.parse(shiping_string));
+			if (baoCunBean.getShipingIP()!=null){
+				media = new Media(libvlc, Uri.parse(baoCunBean.getShipingIP()));
 				mediaPlayer.setMedia(media);
 			//	Log.d(TAG, "ggggggggggggggggg"+shiping_string);
 				mediaPlayer.play();
@@ -2312,83 +2363,21 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 				@Override
 				public void onMessage(String ss) {
 
-//					  Log.d("WebsocketPushMsg", "onMessage:"+ss);
-//
-//					     if(ss.length() > 3000) {
-//                        for(int i=0;i<ss.length();i+=3000){
-//                            if(i+3000<ss.length())
-//                                Log.i("fffffffff"+i,ss.substring(i, i+3000));
-//
-//                            else
-//                                Log.i("fffffffff"+i,ss.substring(i, ss.length()));
-//                        }
-//                    } else
-//                        Log.i("ffffffffff", ss);
 
-
-				//
 					JsonObject jsonObject= GsonUtil.parse(ss).getAsJsonObject();
 					Gson gson=new Gson();
 					WBBean wbBean= gson.fromJson(jsonObject, WBBean.class);
 
-					//Log.d("WebsocketPushMsg", wbBean.getType());
 					if (wbBean.getType().equals("recognized")) { //识别
 						Log.d("WebsocketPushMsg", "识别出了");
 
-						//String s = ss.replace("\\\\\\", "").replace("\"tag\": \"{\"", "\"tag\": {\"").replace("jpg\"}\"", "jpg\"}");
-					//	JsonObject jsonObject5 = GsonUtil.parse(ss).getAsJsonObject();
-
-					//	JsonObject jsonObject1 = jsonObject.get("data").getAsJsonObject();
-						//JsonObject jsonObject2 = jsonObject5.get("person").getAsJsonObject();
-						//   JsonObject jsonObject3=jsonObject.get("screen").getAsJsonObject();
 						final ShiBieBean dataBean = gson.fromJson(jsonObject, ShiBieBean.class);
-						//Log.d("WebsocketPushMsg", dataBean.getPerson().getSrc()+"kkkk");
 
-					//	final WBShiBiePersonBean personBean = gson.fromJson(jsonObject2, WBShiBiePersonBean.class);
-						//Log.d("WebsocketPushMsg", "personBean.getSubject_type():" + personBean.getSubject_type());
-
-//						if (dataBean.getPerson().getSubject_type() == 2) {
-//
-//							//Log.d("WebsocketPushMsg", personBean.getAvatar());
-//							runOnUiThread(new Runnable() {
-//								@Override
-//								public void run() {
-//
-//									stringVector.add("欢迎VIP访客 "+dataBean.getPerson().getName()+" 来访！ 来访时间: "+DateUtils.getCurrentTime_Today());
-//									Collections.reverse(stringVector);
-//
-//									delet();
-//
-//									runOnUiThread(new Runnable() {
-//										@Override
-//										public void run() {
-//											marqueeView.stopFlipping();
-//											marqueeView.startWithList(stringVector);
-//
-//										}
-//									});
-////									VipDialog dialog=new VipDialog(VlcVideoActivity.this,personBean.getAvatar(),R.style.dialog_style,personBean.getName());
-////									Log.d("WebsocketPushMsg", "vip");
-////									dialog.show();
-//								}
-//							});
-//
-//
-//						}else {
 
 							try {
 
 								mSpeechSynthesizer.speak("欢迎" + dataBean.getPerson().getName() + "来学校接送" + dataBean.getPerson().getRemark());
-								MoShengRenBean bean = new MoShengRenBean(dataBean.getPerson().getId(), "sss");
 
-								ShiBieJiLuBean shiBieJiLuBean = new ShiBieJiLuBean();
-								shiBieJiLuBean.setId(dataBean.getPerson().getId());
-								shiBieJiLuBean.setName(dataBean.getPerson().getName());
-								shiBieJiLuBean.setTimes(DateUtils.times(System.currentTimeMillis()));
-								shiBieJiLuBean.setUrlPath(dataBean.getPerson().getAvatar());
-								daoSession.insert(bean);
-								//shiBieJiLuBeanDao.insert(shiBieJiLuBean);
-								shiBieJiLuList.add(shiBieJiLuBean);
 								Message message = Message.obtain();
 								message.what = 19;
 
@@ -2419,138 +2408,17 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 								}
 							}
 
-//							//	Log.d("WebsocketPushMsg", "第一次");
-//						} else if (vector.size() == 2) {
-//							WBShiBieDataBean b1 = (WBShiBieDataBean) vector.get(0);
-//							WBShiBieDataBean b2 = (WBShiBieDataBean) vector.get(1);
-//							//Log.d("WebsocketPushMsg", "b1.getTrack():" + b1.getTrack());
-//							//Log.d("WebsocketPushMsg", "b2.getTrack():" + b2.getTrack());
-//
-//							if (b1.getTrack() != b2.getTrack()) {
-//								//异步保存今天刷脸的人数
-//								Type resultType = new TypeToken<Integer>() {
-//								}.getType();
-//								Reservoir.getAsync("shulianshu", resultType, new ReservoirGetCallback<Integer>() {
-//									@Override
-//									public void onSuccess(Integer i) {
-//										//Log.d("WebsocketPushMsg", "i:" + i);
-//										Message message = new Message();
-//										message.arg1 = 1;
-//										message.arg2 = i + 1;
-//										message.obj = personBean;
-//										handler.sendMessage(message);
-//
-//										Reservoir.putAsync("shulianshu", i + 1, new ReservoirPutCallback() {
-//											@Override
-//											public void onSuccess() {
-//												//	Log.d("WebsocketPushMsg", "保存刷脸人数成功");
-//
-//											}
-//
-//											@Override
-//											public void onFailure(Exception e) {
-//												//Log.d("WebsocketPushMsg66666", e.getMessage());
-//												//error
-//											}
-//										});
-//									}
-//
-//									@Override
-//									public void onFailure(Exception e) {
-//										//Log.d("WebsocketPushMsg", e.getMessage());
-//										Message message = new Message();
-//										message.arg1 = 1;
-//										message.arg2 = 1;
-//										message.obj = personBean;
-//										handler.sendMessage(message);
-//										try {
-//											Reservoir.put("shulianshu", 1);
-//											//	Log.d("WebsocketPushMsg", "ffffffff");
-//										} catch (IOException e1) {
-//											//	Log.d("WebsocketPushMsg", e1.getMessage());
-//
-//										}
-//
-//									}
-//								});
-//
-//								vector.remove(0);
-//								//	Log.d("WebsocketPushMsg", "第二次");
-//							} else {
-//
-//								vector.remove(0);
-//								//Log.d("WebsocketPushMsg", "删除");
-//							}
-//
-//						}
-				//	}
-
-						//   WBShiBieScreenBean screenBean=gson.fromJson(jsonObject3,WBShiBieScreenBean.class);
-//                    try {
-//
-//                        generateImage(dataBean.getFace().getImage(), Environment.getExternalStorageDirectory().getPath()+
-//                                File.separator+"aaaa.jpg");
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
 
 
 					}else if (wbBean.getType().equals("unrecognized")) {
 						Log.d("WebsocketPushMsg", "识别出了陌生人");
 
-//						if (vector2.size()>30){
-//							vector2.clear();
-//							vector2.add("欢迎领导签到:"+DateUtils.getCurrentTime_Today());
-//						}
-//
-//						vector2.add("欢迎领导签到:"+DateUtils.getCurrentTime_Today());
-//						Collections.reverse(vector2);
-
-
-//						runOnUiThread(new Runnable() {
-//							@Override
-//							public void run() {
-//								marqueeView2.stopFlipping();
-//								marqueeView2.startWithList(vector2);
-//
-//							}
-//						});
-
-					//	String s= ss.replace("\\","").replace("\"tag\": \"{\"","\"tag\": {\"").replace("jpg\"}\"","jpg\"}");
-					//	JsonObject jsonObject5= GsonUtil.parse(s).getAsJsonObject();
 						JsonObject jsonObject1 = jsonObject.get("data").getAsJsonObject();
-						//  JsonObject jsonObject3=jsonObject.get("screen").getAsJsonObject();
+
 
 						final WeiShiBieBean dataBean = gson.fromJson(jsonObject1, WeiShiBieBean.class);
-						//Log.d("WebsocketPushMsg", "dataBean.getAttr().getAge():" + dataBean.getAttr().getAge());
-						//Log.d("WebsocketPushMsg", dataBean.getFace().getImage());
-						//Log.d("WebsocketPushMsg", "识别陌生人3333");
-//						vector2.addElement(dataBean);
-						//Log.d("WebsocketPushMsg", "dataBean:" + dataBean.toString());
-						//Log.d("WebsocketPushMsg", "未识别"+dataBean.getAttr().getAge());
-//
-//						Log.d("WebsocketPushMsg", "vector2.size():" + vector2.size());
-//						if (vector2.size()==1){
-//
-//							Message message=new Message();
-//							message.arg1=2;
-//							message.obj=dataBean;
-//							handler.sendMessage(message);
-//							Log.d("WebsocketPushMsg", "未识别的第一次");
-//
-//						}
-//						if (vector2.size()==2){
-//							Log.d("WebsocketPushMsg", "vector2.size()222:" + vector2.size());
-//							WBWeiShiBieDATABean b1=(WBWeiShiBieDATABean)vector2.get(0);
-//							WBWeiShiBieDATABean b2=(WBWeiShiBieDATABean)vector2.get(1);
-//							Log.d("WebsocketPushMsg", "b1.getTrack():" + b1.getTrack()+"    "+b1.getPerson().getId()+"   "+b1.getPerson().getTag().getAvatar());
-//							Log.d("WebsocketPushMsg", "b2.getTrack():" + b2.getTrack()+"     "+b2.getPerson().getId()+"   "+b2.getPerson().getTag().getAvatar());
-//
-//							if (b1.getTrack()!=b2.getTrack()){
-//								if (b1.getPerson().getId().equals(b2.getPerson().getId())){
 
 
-					//	Log.d("WebsocketPushMsg", "识别陌生人");
 						try {
 
 							MoShengRenBean bean = new MoShengRenBean(dataBean.getTrack(), "sss");
@@ -2559,19 +2427,6 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 
 							daoSession.insert(bean);
 
-//							stringVector.add("欢迎你参观！  "+DateUtils.getCurrentTime_Today());
-//							Collections.reverse(stringVector);
-//
-//							delet();
-
-//							runOnUiThread(new Runnable() {
-//								@Override
-//								public void run() {
-//									marqueeView.stopFlipping();
-//									marqueeView.startWithList(stringVector);
-//
-//								}
-//							});
 
 
 							Message message = new Message();
@@ -2580,15 +2435,6 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 							handler.sendMessage(message);
 
 
-						//	Log.d("WebsocketPushMsg", "ddddoooooo");
-
-							//Double d= dataBean.getAttr().getAge();
-							//if (d==0){
-								//创建用户\
-							//	creatUser(b[0],dataBean.getTrack(),"32");
-						//	}else {
-								//creatUser(b[0],dataBean.getTrack(),"");
-							//}
 
 
 						} catch (Exception e) {
@@ -2648,18 +2494,17 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 
 			webSocketClient.connect();
 		}
+		private void close(){
+			if (webSocketClient!=null){
+				webSocketClient.close();
+				webSocketClient=null;
+			}
 
+		}
 
 	}
 
-//	private void delet(){
-//		if (stringVector.size()>=10){
-//			stringVector.remove(stringVector.firstElement());
-//		}else {
-//			return;
-//		}
-//		delet();
-//	}
+
 
 	private void creatUser(byte[] bytes, Long tt, String age) {
 		//Log.d("WebsocketPushMsg", "创建用户");
@@ -2744,11 +2589,11 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 
 	private void addPhoto(final String path, final String fname, final byte[] b, final Long truck, final String age){
 
-		if (zhuji_string!=null){
-			String[] a=zhuji_string.split("//");
-			String[] b1=a[1].split(":");
-			zhuji="http://"+b1[0];
-		}
+//		if (zhuji_string!=null){
+//			String[] a=zhuji_string.split("//");
+//			String[] b1=a[1].split(":");
+//			zhuji="http://"+b1[0];
+//		}
 
 		OkHttpClient okHttpClient= new OkHttpClient();
 
