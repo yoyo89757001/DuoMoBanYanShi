@@ -31,8 +31,6 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':vlc-android-sdk-master')
     //compile 'com.henryblue.library:tvrecyclerview:1.0.6'
-    
-
 
     compile 'com.sdsmdg.tastytoast:tastytoast:0.1.1'
     compile 'org.greenrobot:greendao:3.2.2'
@@ -51,4 +49,6 @@ dependencies {
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.28'
     compile 'com.github.florent37:viewanimator:1.0.5'
     compile 'com.zhy:base-rvadapter:3.0.3'
+    compile 'me.grantland:autofittextview:0.2.+'
+
 }

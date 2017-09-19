@@ -196,7 +196,7 @@ public class SheZhiActivity extends BaseActivity implements View.OnClickListener
                     @Override public void onAnimationEnd(Animator animation) {
                         final XiuGaiXinXiDialog dialog=new XiuGaiXinXiDialog(SheZhiActivity.this);
                         if (baoCunBean.getZhujiDiZhi()==null){
-                            dialog.setContents("设置主机地址","ws://192.168.2.50:9000/video");
+                            dialog.setContents("设置主机地址","ws://192.166.2.65:9000/video");
                         }else {
                             dialog.setContents("设置主机地址",baoCunBean.getZhujiDiZhi());
                         }

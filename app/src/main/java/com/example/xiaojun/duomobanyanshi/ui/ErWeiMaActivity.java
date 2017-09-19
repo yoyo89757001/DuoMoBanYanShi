@@ -1,6 +1,7 @@
 package com.example.xiaojun.duomobanyanshi.ui;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.xiaojun.duomobanyanshi.R;
@@ -87,6 +88,7 @@ public class ErWeiMaActivity extends Activity {
 //        bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
 //        return bitmap;
 //    }
+        startActivity(new Intent(ErWeiMaActivity.this,VlcVideoActivity.class));
 
         finish();
     }

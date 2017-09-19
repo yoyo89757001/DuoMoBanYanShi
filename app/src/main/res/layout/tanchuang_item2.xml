@@ -5,84 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:id="@+id/top11111"
-        android:background="@color/caolv"
-        android:layout_width="match_parent"
-        android:layout_height="260dp">
-
-    <RelativeLayout
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="match_parent">
-
         <ImageView
             android:id="@+id/touxiang"
-            android:layout_width="140dp"
-            android:layout_height="140dp"
-            android:scaleType="fitXY"
-            android:layout_centerVertical="true"
-            android:layout_alignParentEnd="true" />
-
-    </RelativeLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="0dp"
-            android:layout_weight="1.6"
-            android:gravity="center"
-            android:layout_height="match_parent">
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY" />
 
 
-            <TextView
-                android:id="@+id/name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:layout_marginTop="-30dp"
-                android:textColor="@color/white"
-                android:textSize="26sp" />
-
-            <TextView
-                android:textSize="26sp"
-                android:text="欢迎贵宾来访"
-                android:layout_marginTop="30dp"
-                android:textColor="@color/white"
-                android:id="@+id/tee"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <ImageView
-                android:src="@drawable/hengxian"
-                android:layout_width="match_parent"
-                android:layout_marginTop="6dp"
-                android:layout_height="2dp" />
-
-            <TextView
-                android:id="@+id/richeng"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:text="恭喜签到成功"
-                android:textColor="@color/white"
-                android:textSize="22sp" />
-
-            <TextView
-                android:id="@+id/time"
-                android:textSize="18sp"
-                android:layout_marginTop="12dp"
-                android:textColor="@color/white"
-                android:text=""
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
-
-
-
-
-
-    </LinearLayout>
-
-        </RelativeLayout>
+  </RelativeLayout>

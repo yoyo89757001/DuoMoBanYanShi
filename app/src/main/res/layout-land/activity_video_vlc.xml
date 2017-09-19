@@ -8,6 +8,13 @@
         android:background="@color/img_full_opaque"
         android:layout_height="30dp" />
 
+    <ImageView
+        android:layout_width="120dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="30dp"
+        android:background="@drawable/logo44"
+        android:layout_height="60dp" />
+
     <LinearLayout
         android:id="@+id/video_root"
         android:layout_centerInParent="true"
@@ -118,27 +125,32 @@
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerView2"
-                android:visibility="gone"
                 android:layout_centerVertical="true"
                 android:layout_width="match_parent"
                 android:layout_height="260dp"/>
 
 
-                <com.example.xiaojun.duomobanyanshi.media.IjkVideoView
-                    android:layout_width="match_parent"
-                    android:padding="1dp"
-                    android:visibility="gone"
-                    android:layout_height="match_parent"
-                    android:id="@+id/vitamio" />
+                <!--<com.example.xiaojun.duomobanyanshi.media.IjkVideoView-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:padding="1dp"-->
+                    <!--android:visibility="gone"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:id="@+id/vitamio" />-->
 
 
-
+    <ImageView
+        android:id="@+id/vipbg"
+        android:visibility="gone"
+        android:background="@drawable/tcbg1"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_height="100dp" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
-        android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_centerVertical="true"/>
+        android:layout_height="wrap_content"/>
+    
+
 
 </RelativeLayout>
