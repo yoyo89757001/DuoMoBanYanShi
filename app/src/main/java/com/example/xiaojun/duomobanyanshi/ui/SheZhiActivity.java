@@ -4,38 +4,23 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.app.Activity;
-
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.example.xiaojun.duomobanyanshi.MyApplication;
 import com.example.xiaojun.duomobanyanshi.R;
-import com.example.xiaojun.duomobanyanshi.adapter.SpaceItemDecoration;
 import com.example.xiaojun.duomobanyanshi.beans.BaoCunBean;
 import com.example.xiaojun.duomobanyanshi.beans.BaoCunBeanDao;
-import com.example.xiaojun.duomobanyanshi.beans.SheZhiBean;
 import com.example.xiaojun.duomobanyanshi.dialog.XiuGaiXinXiDialog;
 import com.sdsmdg.tastytoast.TastyToast;
-import com.zhy.adapter.recyclerview.CommonAdapter;
-import com.zhy.adapter.recyclerview.base.ViewHolder;
-
 import java.util.ArrayList;
 import java.util.List;
 

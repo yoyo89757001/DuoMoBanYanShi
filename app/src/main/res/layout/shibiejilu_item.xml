@@ -25,7 +25,7 @@
                 android:id="@+id/type"
                 android:layout_below="@+id/touxiang2"
                 android:textColor="@color/lanse33"
-                android:textSize="20sp"
+                android:textSize="26sp"
                 android:layout_marginTop="60dp"
                 android:layout_centerHorizontal="true"
                 android:layout_width="wrap_content"
@@ -34,7 +34,7 @@
     <TextView
         android:id="@+id/name2"
         android:textColor="@color/lanse33"
-        android:textSize="21sp"
+        android:textSize="28sp"
         android:layout_marginTop="16dp"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/type"

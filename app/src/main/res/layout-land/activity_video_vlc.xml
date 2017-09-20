@@ -155,8 +155,9 @@
         android:layout_width="match_parent"
         android:id="@+id/autofitTextView"
         android:gravity="center"
-        android:textSize="50sp"
-        android:maxLines="6"
+        android:textSize="66sp"
+        android:textStyle="bold"
+        android:maxLines="3"
         android:layout_marginTop="100dp"
         android:textColor="@color/white"
         android:layout_height="match_parent" />
