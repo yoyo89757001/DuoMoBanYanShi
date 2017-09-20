@@ -90,6 +90,8 @@ public class ErWeiMaActivity extends Activity {
 //    }
         startActivity(new Intent(ErWeiMaActivity.this,VlcVideoActivity.class));
 
-        finish();
+          finish();
+
+
     }
 }

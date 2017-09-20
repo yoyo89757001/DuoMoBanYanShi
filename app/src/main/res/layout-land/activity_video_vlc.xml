@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:autofit="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/bg11"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -125,9 +126,8 @@
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerView2"
-                android:layout_centerVertical="true"
                 android:layout_width="match_parent"
-                android:layout_height="260dp"/>
+                android:layout_height="wrap_content"/>
 
 
                 <!--<com.example.xiaojun.duomobanyanshi.media.IjkVideoView-->
@@ -137,14 +137,32 @@
                     <!--android:layout_height="match_parent"-->
                     <!--android:id="@+id/vitamio" />-->
 
+<RelativeLayout
+    android:id="@+id/vipbg_rl"
+    android:visibility="gone"
+    android:layout_alignParentBottom="true"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/vipbg"
-        android:visibility="gone"
         android:background="@drawable/tcbg1"
         android:layout_width="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_height="100dp" />
+        android:layout_height="match_parent" />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:id="@+id/autofitTextView"
+        android:gravity="center"
+        android:textSize="50sp"
+        android:maxLines="6"
+        android:layout_marginTop="100dp"
+        android:textColor="@color/white"
+        android:layout_height="match_parent" />
+
+</RelativeLayout>
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"

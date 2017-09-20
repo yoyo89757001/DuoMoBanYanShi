@@ -1,76 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:padding="8dp"
+    android:id="@+id/ddyy"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_marginLeft="@dimen/dp_10"
+    android:layout_marginRight="@dimen/dp_10"
+    android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/ddd"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:layout_width="match_parent"
-        android:layout_height="100dp">
-        <ImageView
-            android:scaleType="fitXY"
-            android:id="@+id/touxiang"
-            android:layout_width="96dp"
-            android:layout_height="96dp" />
+    <ImageView
+        android:id="@+id/logo_bg"
+        android:src="@drawable/dianxinlogo"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_width="70dp"
+        android:layout_height="30dp" />
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_marginLeft="2dp"
-            android:gravity="center_vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent">
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/uu"
-                    android:text="欢迎 "
-                    android:textColor="@color/default_background"
-                    android:textSize="22sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                <TextView
-                    android:id="@+id/miaoshu"
-                    android:textColor="@color/caolv"
-                    android:textSize="26sp"
-                    android:textStyle="bold"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                <TextView
-                    android:text=" 家长"
-                    android:textColor="@color/default_background"
-                    android:textSize="22sp"
-                    android:maxLines="1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+    <ImageView
+        android:id="@+id/touxiang2"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
-            </LinearLayout>
             <TextView
-                android:text="来学校接送小朋友"
-                android:textColor="@color/default_background"
-                android:textSize="22sp"
+                android:id="@+id/type"
+                android:layout_below="@+id/touxiang2"
+                android:textColor="@color/lanse33"
+                android:textSize="20sp"
+                android:layout_marginTop="60dp"
+                android:layout_centerHorizontal="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <TextView
-                android:id="@+id/time"
-                android:textColor="@color/default_background"
-                android:textSize="18sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
-
-
-    </LinearLayout>
+    <TextView
+        android:id="@+id/name2"
+        android:textColor="@color/lanse33"
+        android:textSize="21sp"
+        android:layout_marginTop="16dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 
-
-
-
-</LinearLayout>
+</RelativeLayout>
