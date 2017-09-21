@@ -1405,7 +1405,7 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 				ViewGroup.LayoutParams lp =  linearLayout_tanchuang.getLayoutParams();
 
 			    //弹窗的高宽
-				lp.width=dw/5-40;
+				lp.width=dw/5-20;
 				lp.height=dh/3+80;
 				linearLayout_tanchuang.setLayoutParams(lp);
 			    linearLayout_tanchuang.invalidate();
