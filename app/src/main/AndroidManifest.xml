@@ -47,17 +47,19 @@
         android:roundIcon="@drawable/morentoux"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.VlcVideoActivity">
+        <activity android:name=".ui.LogingActivity"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            >
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"
-                    android:configChanges="orientation|keyboardHidden|screenSize"
-                    />
+                <action
+                    android:name="android.intent.action.MAIN"
+                    android:configChanges="orientation|keyboardHidden|screenSize" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".ui.ErWeiMaActivity" />
-
+        <activity android:name=".ui.VlcVideoActivity"/>
         <!-- <meta-data -->
         <!-- android:name="com.baidu.lbsapi.API_KEY" -->
         <!-- android:value="uTTmEt0NeHSsgAKsXGLAMC8mvg6zPNLm" /> -->
@@ -170,10 +172,13 @@
         <service android:name=".DownloadService.DownloadService" />
         <service android:name=".DownloadService.DownloadTuPianService" />
 
-        <activity android:name=".ui.SheZhiActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            />
-        <activity android:name=".ui.BaseActivity"/>
+        <activity
+            android:name=".ui.SheZhiActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
+        <activity android:name=".ui.BaseActivity" />
+        <activity android:name=".ui.VlcVideoActivity2" />
+        <activity android:name=".ui.VlcVideoActivity3"/>
+
     </application>
 
 </manifest>

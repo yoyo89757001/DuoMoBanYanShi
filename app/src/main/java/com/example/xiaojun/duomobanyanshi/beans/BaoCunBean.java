@@ -15,15 +15,15 @@ public class BaoCunBean {
     private Long id;
     private String shipingIP;
     private String zhujiDiZhi;
-    private String moban;
+    private int moban;
     private String tuisongDiZhi;
     private String gonggao;
     private boolean isShowMoshengren;
     private boolean isShowShiPingLiu;
     private boolean isHengOrShu;
-    @Generated(hash = 1045557963)
+    @Generated(hash = 561513398)
     public BaoCunBean(@NotNull Long id, String shipingIP, String zhujiDiZhi,
-            String moban, String tuisongDiZhi, String gonggao,
+            int moban, String tuisongDiZhi, String gonggao,
             boolean isShowMoshengren, boolean isShowShiPingLiu,
             boolean isHengOrShu) {
         this.id = id;
@@ -57,10 +57,10 @@ public class BaoCunBean {
     public void setZhujiDiZhi(String zhujiDiZhi) {
         this.zhujiDiZhi = zhujiDiZhi;
     }
-    public String getMoban() {
+    public int getMoban() {
         return this.moban;
     }
-    public void setMoban(String moban) {
+    public void setMoban(int moban) {
         this.moban = moban;
     }
     public String getTuisongDiZhi() {
@@ -93,6 +93,7 @@ public class BaoCunBean {
     public void setIsHengOrShu(boolean isHengOrShu) {
         this.isHengOrShu = isHengOrShu;
     }
+
 
    
 

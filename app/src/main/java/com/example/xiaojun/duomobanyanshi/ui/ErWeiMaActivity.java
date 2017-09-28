@@ -16,6 +16,8 @@ public class ErWeiMaActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_er_wei_ma);
+        int ss=getIntent().getIntExtra("ttt",0);
+
 //        //获得资源图片，可改成获取本地图片或拍照获取图片
 //        logo= BitmapFactory.decodeResource(super.getResources(),R.drawable.yixuanze_22);
 //        etCompany =(EditText) findViewById(R.id.etCompany);
@@ -88,7 +90,18 @@ public class ErWeiMaActivity extends Activity {
 //        bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
 //        return bitmap;
 //    }
-        startActivity(new Intent(ErWeiMaActivity.this,VlcVideoActivity.class));
+        switch (ss){
+            case 1:
+                startActivity(new Intent(ErWeiMaActivity.this,VlcVideoActivity.class));
+                break;
+            case 2:
+                startActivity(new Intent(ErWeiMaActivity.this,VlcVideoActivity2.class));
+                break;
+            case 3:
+                startActivity(new Intent(ErWeiMaActivity.this,VlcVideoActivity3.class));
+                break;
+
+        }
 
           finish();
 

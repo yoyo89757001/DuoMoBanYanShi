@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -19,6 +20,7 @@ import com.example.xiaojun.duomobanyanshi.MyApplication;
 import com.example.xiaojun.duomobanyanshi.R;
 import com.example.xiaojun.duomobanyanshi.beans.BaoCunBean;
 import com.example.xiaojun.duomobanyanshi.beans.BaoCunBeanDao;
+import com.example.xiaojun.duomobanyanshi.dialog.MoBanDialog;
 import com.example.xiaojun.duomobanyanshi.dialog.XiuGaiXinXiDialog;
 import com.sdsmdg.tastytoast.TastyToast;
 import java.util.ArrayList;
@@ -32,7 +34,7 @@ public class SheZhiActivity extends BaseActivity implements View.OnClickListener
     private RecyclerView mTvRecyclerView;
     private BaoCunBeanDao baoCunBeanDao=null;
     private BaoCunBean baoCunBean=null;
-
+    private int moban=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +52,8 @@ public class SheZhiActivity extends BaseActivity implements View.OnClickListener
             baoCunBean.setId(123456L);
             baoCunBeanDao.insert(baoCunBean);
             Log.d("SheZhiActivity", "插入");
+        }else {
+            moban=baoCunBean.getMoban();
         }
 
         if (baoCunBean!=null && baoCunBean.getIsHengOrShu()){
@@ -72,8 +76,6 @@ public class SheZhiActivity extends BaseActivity implements View.OnClickListener
         }
 
 
-
-
         bt1= (Button) findViewById(R.id.bt1);
         bt1.setOnClickListener(this);
         bt1.setOnFocusChangeListener(this);
@@ -92,6 +94,10 @@ public class SheZhiActivity extends BaseActivity implements View.OnClickListener
         bt6= (Button) findViewById(R.id.bt6);
         bt6.setOnClickListener(this);
         bt6.setOnFocusChangeListener(this);
+        bt7= (Button) findViewById(R.id.bt7);
+        bt7.setOnClickListener(this);
+        bt7.setOnFocusChangeListener(this);
+
         bt1.requestFocus();
         sheZhiBeanList = new ArrayList<>();
         sheZhiBeanList.add(bt1);
@@ -100,6 +106,7 @@ public class SheZhiActivity extends BaseActivity implements View.OnClickListener
         sheZhiBeanList.add(bt4);
         sheZhiBeanList.add(bt5);
         sheZhiBeanList.add(bt6);
+        sheZhiBeanList.add(bt7);
 
         if (baoCunBean!=null && baoCunBean.getIsHengOrShu()){
             bt6.setText("已设置为横屏");
@@ -325,6 +332,32 @@ public class SheZhiActivity extends BaseActivity implements View.OnClickListener
                 animatorSet6.start();
 
                 break;
+
+            case R.id.bt7:
+                ChongsZHI();
+                bt7.requestFocus();
+                bt7.setTextColor(Color.WHITE);
+                bt7.setBackgroundResource(R.drawable.zidonghuoqu1);
+                AnimatorSet animatorSet7 = new AnimatorSet();
+                animatorSet7.playTogether(
+                        //	ObjectAnimator.ofFloat(manager.getChildAt(1),"translationY",-1000,0),
+                        ObjectAnimator.ofFloat(bt7,"scaleX",1.0f,1.2f,1.0f),
+                        ObjectAnimator.ofFloat(bt7,"scaleY",1.0f,1.2f,1.0f)
+                );
+                //animatorSet.setInterpolator(new DescelerateInterpolator());
+                animatorSet7.setDuration(300);
+                animatorSet7.addListener(new AnimatorListenerAdapter(){
+                    @Override public void onAnimationEnd(Animator animation) {
+                        //弹窗
+                        MoBanDialog dialog=new MoBanDialog(SheZhiActivity.this,baoCunBeanDao);
+                        dialog.show();
+                        bt7.setEnabled(true);
+                    }
+                });
+                animatorSet7.start();
+                bt7.setEnabled(false);
+
+                break;
         }
 
     }
@@ -472,8 +505,62 @@ public class SheZhiActivity extends BaseActivity implements View.OnClickListener
                     });
                     animatorSet6.start();
                 }
-                Log.d("SheZhiActivity", "hasFocus6:" + hasFocus);
+
+                break;
+            case R.id.bt7:
+                if (hasFocus){
+                    ChongsZHI();
+                    bt7.setTextColor(Color.WHITE);
+                    bt7.setBackgroundResource(R.drawable.zidonghuoqu1);
+                    AnimatorSet animatorSet6 = new AnimatorSet();
+                    animatorSet6.playTogether(
+                            //	ObjectAnimator.ofFloat(manager.getChildAt(1),"translationY",-1000,0),
+                            ObjectAnimator.ofFloat(bt7,"scaleX",1.0f,1.2f,1.0f),
+                            ObjectAnimator.ofFloat(bt7,"scaleY",1.0f,1.2f,1.0f)
+                    );
+                    //animatorSet.setInterpolator(new DescelerateInterpolator());
+                    animatorSet6.setDuration(300);
+                    animatorSet6.addListener(new AnimatorListenerAdapter(){
+                        @Override public void onAnimationEnd(Animator animation) {
+
+                        }
+                    });
+                    animatorSet6.start();
+                }
+              //  Log.d("SheZhiActivity", "hasFocus7:" + hasFocus);
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        baoCunBean=baoCunBeanDao.load(123456L);
+        int b=baoCunBean.getMoban();
+
+            switch (b){
+                case 0:
+                    Intent intent=new Intent("guanbi");
+                    sendBroadcast(intent);
+                    startActivity(new Intent(SheZhiActivity.this,VlcVideoActivity.class));
+                    finish();
+                    break;
+                case 1:
+                    Intent intent2=new Intent("guanbi");
+                    sendBroadcast(intent2);
+                    startActivity(new Intent(SheZhiActivity.this,VlcVideoActivity2.class));
+                    finish();
+                    break;
+
+                case 2:
+                    Intent intent3=new Intent("guanbi");
+                    sendBroadcast(intent3);
+                    startActivity(new Intent(SheZhiActivity.this,VlcVideoActivity3.class));
+                    finish();
+                    break;
+            }
+
+
+        super.onBackPressed();
+
     }
 }

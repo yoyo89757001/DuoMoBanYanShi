@@ -1,17 +1,14 @@
 package com.example.xiaojun.duomobanyanshi.ui;
 
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
-
 import android.graphics.Color;
 import android.graphics.PixelFormat;
-
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,31 +18,27 @@ import android.os.Looper;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-
 import android.util.Log;
-
 import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
-import android.view.ViewGroup;;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.baidu.tts.auth.AuthInfo;
 import com.baidu.tts.client.SpeechError;
 import com.baidu.tts.client.SpeechSynthesizer;
 import com.baidu.tts.client.SpeechSynthesizerListener;
-
 import com.baidu.tts.client.TtsMode;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.xiaojun.duomobanyanshi.MyApplication;
@@ -66,7 +59,6 @@ import com.example.xiaojun.duomobanyanshi.beans.User;
 import com.example.xiaojun.duomobanyanshi.beans.WBBean;
 import com.example.xiaojun.duomobanyanshi.beans.WeiShiBieBean;
 import com.example.xiaojun.duomobanyanshi.interfaces.RecytviewCash;
-
 import com.example.xiaojun.duomobanyanshi.utils.DateUtils;
 import com.example.xiaojun.duomobanyanshi.utils.GlideCircleTransform;
 import com.example.xiaojun.duomobanyanshi.utils.GlideRoundTransform;
@@ -74,8 +66,6 @@ import com.example.xiaojun.duomobanyanshi.utils.GsonUtil;
 import com.example.xiaojun.duomobanyanshi.utils.ImageUtil;
 import com.example.xiaojun.duomobanyanshi.utils.LibVLCUtil;
 import com.example.xiaojun.duomobanyanshi.utils.Utils;
-
-import com.example.xiaojun.duomobanyanshi.view.AutoResizeTextView;
 import com.example.xiaojun.duomobanyanshi.view.DividerItemDecoration;
 import com.example.xiaojun.duomobanyanshi.view.WrapContentLinearLayoutManager;
 import com.github.florent37.viewanimator.ViewAnimator;
@@ -89,11 +79,10 @@ import org.videolan.libvlc.IVLCVout;
 import org.videolan.libvlc.LibVLC;
 import org.videolan.libvlc.Media;
 import org.videolan.libvlc.MediaPlayer;
+
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -106,8 +95,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.TimeUnit;
-import cn.jpush.android.api.JPushInterface;
 
+import cn.jpush.android.api.JPushInterface;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -121,8 +110,10 @@ import okhttp3.ResponseBody;
 import sun.misc.BASE64Decoder;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
+;
 
-public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerListener,RecytviewCash {
+
+public class VlcVideoActivity3 extends BaseActivity implements SpeechSynthesizerListener,RecytviewCash {
 	private IVLCVout vlcVout=null;
 	private MediaPlayer mediaPlayer=null;
 	private final static String TAG = "VlcVideoActivity";
@@ -690,10 +681,10 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);//设置全屏
 		//DisplayMetrics dm = getResources().getDisplayMetrics();
-		dw = Utils.getDisplaySize(VlcVideoActivity.this).x;
-		dh = Utils.getDisplaySize(VlcVideoActivity.this).y;
+		dw = Utils.getDisplaySize(VlcVideoActivity3.this).x;
+		dh = Utils.getDisplaySize(VlcVideoActivity3.this).y;
 
-		setContentView(R.layout.activity_video_vlc);
+		setContentView(R.layout.activity_video_vlc3);
 		RelativeLayout r= (RelativeLayout) findViewById(R.id.top_rl);
 		r.setBackground( new BitmapDrawable(getResources(),ImageUtil.decodeSampledBitmapFromResource(getResources(),R.drawable.bg11,dw,dh)));
 
@@ -728,7 +719,7 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				JPushInterface.setAlias(VlcVideoActivity.this,1,"children");
+				JPushInterface.setAlias(VlcVideoActivity3.this,1,"children");
 			}
 		}).start();
 
@@ -777,7 +768,7 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 			public void onClick(View v) {
 				chongzhi();
 				isTiaoZhuang=false;
-				startActivity(new Intent(VlcVideoActivity.this, SheZhiActivity.class));
+				startActivity(new Intent(VlcVideoActivity3.this, SheZhiActivity.class));
 			}
 		});
 
@@ -884,7 +875,7 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 		//mSurfaceHolder.addCallback(this);
 		mSurfaceView.setKeepScreenOn(true);
 
-		libvlc = LibVLCUtil.getLibVLC(VlcVideoActivity.this);
+		libvlc = LibVLCUtil.getLibVLC(VlcVideoActivity3.this);
 		mediaPlayer = new MediaPlayer(libvlc);
 		vlcVout = mediaPlayer.getVLCVout();
 
@@ -981,10 +972,10 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 //		File file=new File("mnt/usb_storage/USB_DISK1"+File.separator+"a1.mp4");
 //		Log.d(TAG, "file.length():" + file.length());
 
-		manager = new WrapContentLinearLayoutManager(VlcVideoActivity.this,LinearLayoutManager.HORIZONTAL, false,this);
+		manager = new WrapContentLinearLayoutManager(VlcVideoActivity3.this,LinearLayoutManager.HORIZONTAL, false,this);
 		recyclerView.setLayoutManager(manager);
 
-		manager2 = new WrapContentLinearLayoutManager(VlcVideoActivity.this,LinearLayoutManager.HORIZONTAL, false,this);
+		manager2 = new WrapContentLinearLayoutManager(VlcVideoActivity3.this,LinearLayoutManager.HORIZONTAL, false,this);
 		recyclerView2.setLayoutManager(manager2);
 
 		adapter = new MyAdapter(R.layout.tanchuang_item2,tanchuangList);
@@ -1633,7 +1624,7 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 						//恢复视频流
 						if (isTiaoZhuang){
 
-							startActivity(new Intent(VlcVideoActivity.this, ErWeiMaActivity.class).putExtra("ttt",1));
+							startActivity(new Intent(VlcVideoActivity3.this, ErWeiMaActivity.class).putExtra("ttt",3));
 							Log.d(TAG, "断线开启新Activity");
 							finish();
 						}else {
@@ -1691,7 +1682,7 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 					baoCunBean=baoCunBeanDao.load(123456L);
 					if (baoCunBean.getShipingIP() != null && baoCunBean.getZhujiDiZhi() != null) {
 						if (isTiaoZhuang){
-							startActivity(new Intent(VlcVideoActivity.this, ErWeiMaActivity.class));
+							startActivity(new Intent(VlcVideoActivity3.this, ErWeiMaActivity.class));
 						}else {
 
 							return;
@@ -2013,7 +2004,7 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 			Log.d(TAG, "按下菜单键 ");
 			chongzhi();
 			isTiaoZhuang=false;
-			startActivity(new Intent(VlcVideoActivity.this, SheZhiActivity.class));
+			startActivity(new Intent(VlcVideoActivity3.this, SheZhiActivity.class));
 
 		}
 
@@ -2045,7 +2036,7 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 
 			}
 		}else {
-			TastyToast.makeText(VlcVideoActivity.this,"请先设置主机地址和摄像头IP",TastyToast.LENGTH_SHORT,TastyToast.INFO).show();
+			TastyToast.makeText(VlcVideoActivity3.this,"请先设置主机地址和摄像头IP",TastyToast.LENGTH_SHORT,TastyToast.INFO).show();
 		}
 
 
@@ -2335,8 +2326,8 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 		RelativeLayout.LayoutParams vipbg_lp = (RelativeLayout.LayoutParams) vipbg_rl.getLayoutParams();
 		RelativeLayout.LayoutParams re1 = (RelativeLayout.LayoutParams) recyclerView.getLayoutParams();
 		RelativeLayout.LayoutParams re2 = (RelativeLayout.LayoutParams) recyclerView2.getLayoutParams();
-			lp.width = ((dw*5)/7)+50;
-			lp.height = ((dh*5)/7)-50;
+			lp.width = ((dw*8)/10)+50;
+			lp.height = ((dh*8)/10)-50;
 			//Log.d(TAG, "dh:" + dh);
 			linearLayout.setLayoutParams(lp);
 			linearLayout.invalidate();
@@ -2599,7 +2590,7 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 					runOnUiThread(new Runnable() {
 						@Override
 						public void run() {
-							TastyToast.makeText(VlcVideoActivity.this,"连接已断开,10秒后重新连接", Toast.LENGTH_LONG,TastyToast.ERROR).show();
+							TastyToast.makeText(VlcVideoActivity3.this,"连接已断开,10秒后重新连接", Toast.LENGTH_LONG,TastyToast.ERROR).show();
 						}
 					});
 
@@ -2815,7 +2806,7 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 
 				}
 				//删除照片
-				Log.d("VlcVideoActivity", "删除照片:" + VlcVideoActivity.this.deleteFile(fname));
+				Log.d("VlcVideoActivity", "删除照片:" + VlcVideoActivity3.this.deleteFile(fname));
 
 				}catch (Exception e){
 					Log.d("WebsocketPushMsg", e.getMessage());

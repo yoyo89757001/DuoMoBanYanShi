@@ -25,7 +25,7 @@ public class BaoCunBeanDao extends AbstractDao<BaoCunBean, Long> {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property ShipingIP = new Property(1, String.class, "shipingIP", false, "SHIPING_IP");
         public final static Property ZhujiDiZhi = new Property(2, String.class, "zhujiDiZhi", false, "ZHUJI_DI_ZHI");
-        public final static Property Moban = new Property(3, String.class, "moban", false, "MOBAN");
+        public final static Property Moban = new Property(3, int.class, "moban", false, "MOBAN");
         public final static Property TuisongDiZhi = new Property(4, String.class, "tuisongDiZhi", false, "TUISONG_DI_ZHI");
         public final static Property Gonggao = new Property(5, String.class, "gonggao", false, "GONGGAO");
         public final static Property IsShowMoshengren = new Property(6, boolean.class, "isShowMoshengren", false, "IS_SHOW_MOSHENGREN");
@@ -49,7 +49,7 @@ public class BaoCunBeanDao extends AbstractDao<BaoCunBean, Long> {
                 "\"_id\" INTEGER PRIMARY KEY NOT NULL ," + // 0: id
                 "\"SHIPING_IP\" TEXT," + // 1: shipingIP
                 "\"ZHUJI_DI_ZHI\" TEXT," + // 2: zhujiDiZhi
-                "\"MOBAN\" TEXT," + // 3: moban
+                "\"MOBAN\" INTEGER NOT NULL ," + // 3: moban
                 "\"TUISONG_DI_ZHI\" TEXT," + // 4: tuisongDiZhi
                 "\"GONGGAO\" TEXT," + // 5: gonggao
                 "\"IS_SHOW_MOSHENGREN\" INTEGER NOT NULL ," + // 6: isShowMoshengren
@@ -77,11 +77,7 @@ public class BaoCunBeanDao extends AbstractDao<BaoCunBean, Long> {
         if (zhujiDiZhi != null) {
             stmt.bindString(3, zhujiDiZhi);
         }
- 
-        String moban = entity.getMoban();
-        if (moban != null) {
-            stmt.bindString(4, moban);
-        }
+        stmt.bindLong(4, entity.getMoban());
  
         String tuisongDiZhi = entity.getTuisongDiZhi();
         if (tuisongDiZhi != null) {
@@ -111,11 +107,7 @@ public class BaoCunBeanDao extends AbstractDao<BaoCunBean, Long> {
         if (zhujiDiZhi != null) {
             stmt.bindString(3, zhujiDiZhi);
         }
- 
-        String moban = entity.getMoban();
-        if (moban != null) {
-            stmt.bindString(4, moban);
-        }
+        stmt.bindLong(4, entity.getMoban());
  
         String tuisongDiZhi = entity.getTuisongDiZhi();
         if (tuisongDiZhi != null) {
@@ -142,7 +134,7 @@ public class BaoCunBeanDao extends AbstractDao<BaoCunBean, Long> {
             cursor.getLong(offset + 0), // id
             cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // shipingIP
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // zhujiDiZhi
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // moban
+            cursor.getInt(offset + 3), // moban
             cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // tuisongDiZhi
             cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // gonggao
             cursor.getShort(offset + 6) != 0, // isShowMoshengren
@@ -157,7 +149,7 @@ public class BaoCunBeanDao extends AbstractDao<BaoCunBean, Long> {
         entity.setId(cursor.getLong(offset + 0));
         entity.setShipingIP(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
         entity.setZhujiDiZhi(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setMoban(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setMoban(cursor.getInt(offset + 3));
         entity.setTuisongDiZhi(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
         entity.setGonggao(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
         entity.setIsShowMoshengren(cursor.getShort(offset + 6) != 0);

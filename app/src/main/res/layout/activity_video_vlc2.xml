@@ -1,0 +1,267 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/top_rl"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <Button
+        android:layout_width="30dp"
+        android:id="@+id/ddd"
+        android:background="@color/img_full_opaque"
+        android:layout_height="30dp" />
+
+    <ImageView
+        android:layout_width="330dp"
+        android:id="@+id/quan"
+        android:layout_marginTop="-100dp"
+        android:src="@drawable/quan"
+        android:scaleType="fitXY"
+        android:layout_marginLeft="-130dp"
+        android:layout_height="330dp" />
+
+    <ImageView
+        android:layout_width="160dp"
+        android:layout_marginTop="20dp"
+        android:id="@+id/logo_im"
+        android:layout_marginLeft="30dp"
+        android:background="@drawable/ruitong_logo"
+        android:layout_height="60dp" />
+
+
+    <LinearLayout
+        android:id="@+id/video_root"
+        android:layout_centerInParent="true"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="@drawable/kaung"
+                android:layout_width="match_parent"
+                android:layout_height="0dp">
+
+                <TextView
+                    android:text="12:12"
+                    android:id="@+id/xiaoshi"
+                    android:gravity="center"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="@color/white"
+                    android:textSize="50sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:text="2012年12月22日"
+                        android:textColor="@color/white"
+                        android:textSize="26sp"
+                        android:id="@+id/riqi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:text="周五"
+                        android:id="@+id/xingqi"
+                        android:textColor="@color/white"
+                        android:textSize="34sp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <View
+                android:background="@color/transparent"
+                android:layout_weight="0.1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"/>
+
+            <LinearLayout
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:background="@drawable/kaung"
+                android:layout_width="match_parent"
+                android:layout_height="0dp">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:layout_margin="26dp"
+                    android:layout_height="match_parent">
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:src="@drawable/taiyang2"
+                        android:scaleType="fitXY"
+                        android:layout_height="match_parent"
+                        android:id="@+id/imageView2"
+                        android:layout_marginEnd="32dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="16dp"
+                    android:gravity="center_vertical"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:textSize="36sp"
+                        android:textColor="@color/white"
+                        android:text="晴"
+                        android:id="@+id/tianqi0"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:textSize="36sp"
+                        android:textColor="@color/white"
+                        android:text="温度"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tianqi1"/>
+
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+            <View
+                android:background="@color/transparent"
+                android:layout_weight="0.1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:background="@drawable/kaung">
+
+                <LinearLayout
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:text="空气质量指数"
+                        android:textColor="@color/white"
+                        android:textSize="32sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:text="23"
+                        android:layout_marginLeft="10dp"
+                        android:textColor="@color/result_points"
+                        android:textSize="40sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:src="@drawable/jianbian"
+                    android:layout_marginTop="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp" />
+
+            </LinearLayout>
+
+            <View
+                android:background="@color/transparent"
+                android:layout_weight="0.1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"/>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="5"
+            android:layout_marginLeft="10dp"
+            android:layout_height="match_parent">
+
+            <SurfaceView
+                android:id="@+id/video"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:background="@color/semi_transparent"
+                android:layout_alignParentBottom="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                   android:text="公告"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginRight="4dp"
+                    android:textColor="@color/white"
+                    android:textSize="30sp"
+                    android:maxEms="1"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:id="@+id/gonggao"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/white"
+                    android:textSize="26sp"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+
+                <!--<com.example.xiaojun.duomobanyanshi.media.IjkVideoView-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:padding="1dp"-->
+                    <!--android:visibility="gone"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:id="@+id/vitamio" />-->
+
+
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"/>
+    
+
+</RelativeLayout>

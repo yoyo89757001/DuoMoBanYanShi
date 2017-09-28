@@ -32,6 +32,9 @@ dependencies {
     compile project(':vlc-android-sdk-master')
     //compile 'com.henryblue.library:tvrecyclerview:1.0.6'
 
+    
+
+
     compile 'com.sdsmdg.tastytoast:tastytoast:0.1.1'
     compile 'org.greenrobot:greendao:3.2.2'
     compile 'com.google.code.gson:gson:2.7'
@@ -41,7 +44,6 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:25.3.1'
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'tv.danmaku.ijk.media:ijkplayer-java:0.8.0'
     compile 'tv.danmaku.ijk.media:ijkplayer-armv7a:0.8.0'
     compile 'tv.danmaku.ijk.media:ijkplayer-exo:0.8.0'
@@ -49,6 +51,4 @@ dependencies {
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.28'
     compile 'com.github.florent37:viewanimator:1.0.5'
     compile 'com.zhy:base-rvadapter:3.0.3'
-    compile 'me.grantland:autofittextview:0.2.+'
-
 }

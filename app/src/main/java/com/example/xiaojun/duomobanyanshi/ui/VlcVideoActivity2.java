@@ -1,17 +1,14 @@
 package com.example.xiaojun.duomobanyanshi.ui;
 
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
-
 import android.graphics.Color;
 import android.graphics.PixelFormat;
-
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,31 +18,29 @@ import android.os.Looper;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-
 import android.util.Log;
-
 import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
-import android.view.ViewGroup;;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.baidu.tts.auth.AuthInfo;
 import com.baidu.tts.client.SpeechError;
 import com.baidu.tts.client.SpeechSynthesizer;
 import com.baidu.tts.client.SpeechSynthesizerListener;
-
 import com.baidu.tts.client.TtsMode;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.xiaojun.duomobanyanshi.MyApplication;
@@ -66,7 +61,6 @@ import com.example.xiaojun.duomobanyanshi.beans.User;
 import com.example.xiaojun.duomobanyanshi.beans.WBBean;
 import com.example.xiaojun.duomobanyanshi.beans.WeiShiBieBean;
 import com.example.xiaojun.duomobanyanshi.interfaces.RecytviewCash;
-
 import com.example.xiaojun.duomobanyanshi.utils.DateUtils;
 import com.example.xiaojun.duomobanyanshi.utils.GlideCircleTransform;
 import com.example.xiaojun.duomobanyanshi.utils.GlideRoundTransform;
@@ -74,8 +68,6 @@ import com.example.xiaojun.duomobanyanshi.utils.GsonUtil;
 import com.example.xiaojun.duomobanyanshi.utils.ImageUtil;
 import com.example.xiaojun.duomobanyanshi.utils.LibVLCUtil;
 import com.example.xiaojun.duomobanyanshi.utils.Utils;
-
-import com.example.xiaojun.duomobanyanshi.view.AutoResizeTextView;
 import com.example.xiaojun.duomobanyanshi.view.DividerItemDecoration;
 import com.example.xiaojun.duomobanyanshi.view.WrapContentLinearLayoutManager;
 import com.github.florent37.viewanimator.ViewAnimator;
@@ -89,11 +81,10 @@ import org.videolan.libvlc.IVLCVout;
 import org.videolan.libvlc.LibVLC;
 import org.videolan.libvlc.Media;
 import org.videolan.libvlc.MediaPlayer;
+
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -106,8 +97,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.TimeUnit;
-import cn.jpush.android.api.JPushInterface;
 
+import cn.jpush.android.api.JPushInterface;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -121,8 +112,10 @@ import okhttp3.ResponseBody;
 import sun.misc.BASE64Decoder;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
+;
 
-public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerListener,RecytviewCash {
+
+public class VlcVideoActivity2 extends BaseActivity implements SpeechSynthesizerListener,RecytviewCash {
 	private IVLCVout vlcVout=null;
 	private MediaPlayer mediaPlayer=null;
 	private final static String TAG = "VlcVideoActivity";
@@ -133,7 +126,6 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 	private TextView gonggaoriqi;
 	private String fileType=null;
 	private String fileNames=null;
-
 	private SpeechSynthesizer mSpeechSynthesizer;
 	private String mSampleDirPath;
 	private static final String SAMPLE_DIR_NAME = "baiduTTS";
@@ -196,10 +188,10 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 	private BaoCunBean baoCunBean=null;
 	private boolean isHX;
 	private ImageView vipbg_im;
-	private RelativeLayout vipbg_rl;
+
 	private  boolean isTiaoZhuang=true;
 	private boolean isMoShengRen=true;
-	private TextView autofitTextView;
+	private ImageView dian,logo_im;
 
 //	static Handler handlerGongGao = new Handler();
 //	static Runnable runnableGongGao = new Runnable() {
@@ -276,28 +268,14 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 					break;
 				case 999:
 
-					if (tanchuangList.size()>2) {
-						tanchuangList.remove(2);
+					if (tanchuangList.size()>1) {
+						tanchuangList.remove(1);
 
-						adapter.notifyItemRemoved(2);
+						adapter.notifyItemRemoved(1);
 						//adapter.notifyItemChanged(1);
 						//adapter.notifyItemRangeChanged(1,tanchuangList.size());
 						//adapter.notifyDataSetChanged();
 						manager.scrollToPosition(tanchuangList.size() - 1);
-					}
-					int ii=tanchuangList.size();
-					StringBuilder stringBuilder=new StringBuilder();
-					for (int i=2;i<ii;i++){
-						stringBuilder.append("欢迎");
-						stringBuilder.append(tanchuangList.get(i).getName());
-						stringBuilder.append("领导莅临参观指导.");
-						stringBuilder.append("\n");
-					}
-					autofitTextView.setText(stringBuilder.toString());
-					if (tanchuangList.size()<=2){
-
-						vipbg_rl.setVisibility(View.GONE);
-
 					}
 
 
@@ -379,15 +357,8 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 						case 2:  //VIP访客
 							tanchuangList.add(bean);
 							int ii=tanchuangList.size();
-							vipbg_rl.setVisibility(View.VISIBLE);
-							if (ii==3){
-								ViewAnimator
-										.animate(vipbg_rl)
-										//.scale(0,1)
-										.alpha(0,1)
-										.duration(1000)
-										.start();
-							}
+
+
 							adapter.notifyItemInserted(ii);
 							manager.scrollToPosition(ii-1);
 
@@ -409,14 +380,6 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 								}
 							}).start();
 
-							StringBuilder stringBuilder=new StringBuilder();
-							for (int i=2;i<ii;i++){
-								stringBuilder.append("欢迎");
-								stringBuilder.append(tanchuangList.get(i).getName());
-								stringBuilder.append("领导莅临参观指导.");
-								stringBuilder.append("\n");
-							}
-							autofitTextView.setText(stringBuilder.toString());
 
 							break;
 
@@ -581,12 +544,12 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 		adapter.notifyDataSetChanged();
 		adapter2.notifyDataSetChanged();
 
-		TanChuangBean bean=new TanChuangBean();
-		bean.setBytes(null);
-		bean.setName(null);
-		bean.setType(-2);
-		bean.setTouxiang(null);
-		tanchuangList.add(bean);
+//		TanChuangBean bean=new TanChuangBean();
+//		bean.setBytes(null);
+//		bean.setName(null);
+//		bean.setType(-2);
+//		bean.setTouxiang(null);
+//		tanchuangList.add(bean);
 
 		TanChuangBean bean5=new TanChuangBean();
 		bean5.setBytes(null);
@@ -677,7 +640,7 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Log.d(TAG, "创建111");
+		Log.d(TAG, "创建222");
 
 		baoCunBeanDao=MyApplication.myApplication.getDaoSession().getBaoCunBeanDao();
 		baoCunBean=baoCunBeanDao.load(123456L);
@@ -690,15 +653,17 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);//设置全屏
 		//DisplayMetrics dm = getResources().getDisplayMetrics();
-		dw = Utils.getDisplaySize(VlcVideoActivity.this).x;
-		dh = Utils.getDisplaySize(VlcVideoActivity.this).y;
+		dw = Utils.getDisplaySize(VlcVideoActivity2.this).x;
+		dh = Utils.getDisplaySize(VlcVideoActivity2.this).y;
 
-		setContentView(R.layout.activity_video_vlc);
+		setContentView(R.layout.activity_video_vlc2);
 		RelativeLayout r= (RelativeLayout) findViewById(R.id.top_rl);
-		r.setBackground( new BitmapDrawable(getResources(),ImageUtil.decodeSampledBitmapFromResource(getResources(),R.drawable.bg11,dw,dh)));
+		r.setBackground( new BitmapDrawable(getResources(),ImageUtil.decodeSampledBitmapFromResource(getResources(),R.drawable.bj,dw,dh)));
 
+		dian= (ImageView) findViewById(R.id.quan);
+		logo_im= (ImageView) findViewById(R.id.logo_im);
 		vipbg_im= (ImageView) findViewById(R.id.vipbg);
-		vipbg_rl= (RelativeLayout) findViewById(R.id.vipbg_rl);
+		//vipbg_rl= (RelativeLayout) findViewById(R.id.vipbg_rl);
 
 		if (baoCunBean!=null && baoCunBean.getIsHengOrShu()){
             Log.d(TAG, "横屏");
@@ -728,7 +693,7 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				JPushInterface.setAlias(VlcVideoActivity.this,1,"children");
+				JPushInterface.setAlias(VlcVideoActivity2.this,1,"children");
 			}
 		}).start();
 
@@ -748,12 +713,12 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 		bean.setTouxiang(null);
 		tanchuangList.add(bean);
 
-		TanChuangBean bean2=new TanChuangBean();
-		bean2.setBytes(null);
-		bean2.setName(null);
-		bean2.setType(-2);
-		bean2.setTouxiang(null);
-		tanchuangList.add(bean2);
+//		TanChuangBean bean2=new TanChuangBean();
+//		bean2.setBytes(null);
+//		bean2.setName(null);
+//		bean2.setType(-2);
+//		bean2.setTouxiang(null);
+//		tanchuangList.add(bean2);
 
 		TanChuangBean bean3=new TanChuangBean();
 		bean3.setBytes(null);
@@ -777,7 +742,7 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 			public void onClick(View v) {
 				chongzhi();
 				isTiaoZhuang=false;
-				startActivity(new Intent(VlcVideoActivity.this, SheZhiActivity.class));
+				startActivity(new Intent(VlcVideoActivity2.this, SheZhiActivity.class));
 			}
 		});
 
@@ -854,7 +819,6 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 
 		tianqi0= (TextView) findViewById(R.id.tianqi0);
 		tianqi1= (TextView) findViewById(R.id.tianqi1);
-		autofitTextView= (TextView) findViewById(R.id.autofitTextView);
 		mSurfaceView = (SurfaceView) findViewById(R.id.video);
 		xiaoshi= (TextView) findViewById(R.id.xiaoshi);
 		riqi= (TextView) findViewById(R.id.riqi);
@@ -884,7 +848,7 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 		//mSurfaceHolder.addCallback(this);
 		mSurfaceView.setKeepScreenOn(true);
 
-		libvlc = LibVLCUtil.getLibVLC(VlcVideoActivity.this);
+		libvlc = LibVLCUtil.getLibVLC(VlcVideoActivity2.this);
 		mediaPlayer = new MediaPlayer(libvlc);
 		vlcVout = mediaPlayer.getVLCVout();
 
@@ -981,10 +945,10 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 //		File file=new File("mnt/usb_storage/USB_DISK1"+File.separator+"a1.mp4");
 //		Log.d(TAG, "file.length():" + file.length());
 
-		manager = new WrapContentLinearLayoutManager(VlcVideoActivity.this,LinearLayoutManager.HORIZONTAL, false,this);
+		manager = new WrapContentLinearLayoutManager(VlcVideoActivity2.this,LinearLayoutManager.VERTICAL, false,this);
 		recyclerView.setLayoutManager(manager);
 
-		manager2 = new WrapContentLinearLayoutManager(VlcVideoActivity.this,LinearLayoutManager.HORIZONTAL, false,this);
+		manager2 = new WrapContentLinearLayoutManager(VlcVideoActivity2.this,LinearLayoutManager.HORIZONTAL, false,this);
 		recyclerView2.setLayoutManager(manager2);
 
 		adapter = new MyAdapter(R.layout.tanchuang_item2,tanchuangList);
@@ -1135,6 +1099,15 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 //
 //			}
 //		});
+
+
+		Animation animation = AnimationUtils.loadAnimation(VlcVideoActivity2.this, R.anim.alpha_anim);
+		dian.setAnimation(animation);
+		RelativeLayout.LayoutParams lim= (RelativeLayout.LayoutParams) logo_im.getLayoutParams();
+		lim.width=dw/8;
+		lim.height=dh/10;
+		logo_im.setLayoutParams(lim);
+		logo_im.invalidate();
 
 		link_chengshi();
 
@@ -1326,8 +1299,12 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 					.duration(1000)
 					.start();
 
-		//	LinearLayout toprl= helper.getView(R.id.top11111);
+			RelativeLayout toprl= helper.getView(R.id.ffflll);
 
+			TextView name =helper.getView(R.id.name);
+			TextView t1 =helper.getView(R.id.t1);
+			TextView t2 =helper.getView(R.id.t2);
+			TextView t3 =helper.getView(R.id.t3);
 			ImageView imageView= helper.getView(R.id.touxiang);
 			//TextView richeng=helper.getView(R.id.tee);
 			//TextView time=helper.getView(R.id.time);
@@ -1340,6 +1317,12 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 			//	toprl.setBackgroundColor(Color.parseColor("#00000000"));
 
 				imageView.setImageBitmap(null);
+				toprl.setBackground(null);
+				name.setText("");
+				t1.setText("");
+				t2.setText("");
+				t3.setText("");
+
 			//	richeng.setText("");
 			//	name.setText("");
 				//time.setText("");
@@ -1384,10 +1367,16 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 					//	richeng.setText("");
 					//	name.setText(item.getName());
 						//autoScrollTextView.setText("欢迎VIP访客 "+item.getName()+" 来本公司指导工作。");
-						Message message=Message.obtain();
-						message.what=111;
-						handler.sendMessage(message);
-						break;
+						toprl.setBackgroundResource(R.drawable.vip2_bg);
+						name.setText(item.getName());
+						t1.setText("热 烈 欢 迎");
+						t2.setText(" 领 导");
+						t3.setText("莅 临 指 导");
+
+//						Message message=Message.obtain();
+//						message.what=111;
+//						handler.sendMessage(message);
+//						break;
 
 
 				}
@@ -1397,25 +1386,26 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 
 				Glide.with(MyApplication.getAppContext())
 						.load(zhuji+item.getTouxiang())
-						//.transform(new GlideCircleTransform(MyApplication.getAppContext(),2,Color.parseColor("#ffffffff")))
-						.transform(new GlideRoundTransform(MyApplication.getAppContext(), 6))
+						.transform(new GlideCircleTransform(MyApplication.getAppContext(),2,Color.parseColor("#ffffffff")))
+						//.transform(new GlideRoundTransform(MyApplication.getAppContext(), 6))
 						.into((ImageView) helper.getView(R.id.touxiang));
 			}else {
 				Glide.with(MyApplication.getAppContext())
 						.load(item.getBytes())
-						//.transform(new GlideCircleTransform(MyApplication.getAppContext(),2,Color.parseColor("#ffffffff")))
-						.transform(new GlideRoundTransform(MyApplication.getAppContext(), 6))
+						.transform(new GlideCircleTransform(MyApplication.getAppContext(),2,Color.parseColor("#ffffffff")))
+						//.transform(new GlideRoundTransform(MyApplication.getAppContext(), 6))
 						.into((ImageView) helper.getView(R.id.touxiang));
 		    	}
 			}
 
 
 			RelativeLayout linearLayout_tanchuang = helper.getView(R.id.ffflll);
+
 				ViewGroup.LayoutParams lp =  linearLayout_tanchuang.getLayoutParams();
 
 			    //弹窗的高宽
-				lp.width=dw/5-20;
-				lp.height=dh/3+80;
+
+				lp.height=dh/5+100;
 				linearLayout_tanchuang.setLayoutParams(lp);
 			    linearLayout_tanchuang.invalidate();
 
@@ -1467,7 +1457,7 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 						break;
 					case 0:
 						//员工
-						linearLayout_tanchuang.setBackgroundResource(R.drawable.yg_bg);
+						linearLayout_tanchuang.setBackgroundResource(R.drawable.ygbj);
 						logo.setImageResource(R.drawable.dianxinlogo);
 						type.setText("员工");
 						name2.setText(item.getName());
@@ -1476,7 +1466,7 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 
 					case 1:
 						//访客
-						linearLayout_tanchuang.setBackgroundResource(R.drawable.yg_bg);
+						linearLayout_tanchuang.setBackgroundResource(R.drawable.ygbj);
 						logo.setImageResource(R.drawable.dianxinlogo);
 						type.setText("访客");
 						name2.setText(item.getName());
@@ -1507,7 +1497,7 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 			//员工头像大小
 			touxiang_im.width=dh/5+50;
 			touxiang_im.height=dh/5+50;
-			touxiang_im.topMargin=(dh)/5-40;
+			touxiang_im.topMargin=(dh)/9;
 			imageView.setLayoutParams(touxiang_im);
 			imageView.invalidate();
 			//弹窗宽度
@@ -1633,7 +1623,7 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 						//恢复视频流
 						if (isTiaoZhuang){
 
-							startActivity(new Intent(VlcVideoActivity.this, ErWeiMaActivity.class).putExtra("ttt",1));
+							startActivity(new Intent(VlcVideoActivity2.this, ErWeiMaActivity.class).putExtra("ttt",2));
 							Log.d(TAG, "断线开启新Activity");
 							finish();
 						}else {
@@ -1691,7 +1681,7 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 					baoCunBean=baoCunBeanDao.load(123456L);
 					if (baoCunBean.getShipingIP() != null && baoCunBean.getZhujiDiZhi() != null) {
 						if (isTiaoZhuang){
-							startActivity(new Intent(VlcVideoActivity.this, ErWeiMaActivity.class));
+							startActivity(new Intent(VlcVideoActivity2.this, ErWeiMaActivity.class));
 						}else {
 
 							return;
@@ -1900,7 +1890,6 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 //					});
 				}
 				if (intent.getAction().equals("guanbi")){
-					Log.d(TAG, "关闭");
 					finish();
 				}
 
@@ -2013,7 +2002,7 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 			Log.d(TAG, "按下菜单键 ");
 			chongzhi();
 			isTiaoZhuang=false;
-			startActivity(new Intent(VlcVideoActivity.this, SheZhiActivity.class));
+			startActivity(new Intent(VlcVideoActivity2.this, SheZhiActivity.class));
 
 		}
 
@@ -2045,7 +2034,7 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 
 			}
 		}else {
-			TastyToast.makeText(VlcVideoActivity.this,"请先设置主机地址和摄像头IP",TastyToast.LENGTH_SHORT,TastyToast.INFO).show();
+			TastyToast.makeText(VlcVideoActivity2.this,"请先设置主机地址和摄像头IP",TastyToast.LENGTH_SHORT,TastyToast.INFO).show();
 		}
 
 
@@ -2332,28 +2321,30 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 
 		//if (w<h){
 		RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) linearLayout.getLayoutParams();
-		RelativeLayout.LayoutParams vipbg_lp = (RelativeLayout.LayoutParams) vipbg_rl.getLayoutParams();
+		//RelativeLayout.LayoutParams vipbg_lp = (RelativeLayout.LayoutParams) vipbg_rl.getLayoutParams();
 		RelativeLayout.LayoutParams re1 = (RelativeLayout.LayoutParams) recyclerView.getLayoutParams();
 		RelativeLayout.LayoutParams re2 = (RelativeLayout.LayoutParams) recyclerView2.getLayoutParams();
-			lp.width = ((dw*5)/7)+50;
-			lp.height = ((dh*5)/7)-50;
+			lp.width = ((dw*9)/10);
+			lp.height = ((dh*8)/10-50);
 			//Log.d(TAG, "dh:" + dh);
 			linearLayout.setLayoutParams(lp);
 			linearLayout.invalidate();
 
-			vipbg_lp.width = dw;
-		    vipbg_lp.height = (dh/3)*2-80;
+			//vipbg_lp.width = dw;
+		  //  vipbg_lp.height = (dh/3)*2-80;
 
-		  re1.width=dw;
-		  re1.height = (dh/3)*2-80;
-		  re1.topMargin=dh/6-20;
+		  re1.width=dw/2-40;
+		  re1.height = dh;
+		  re1.leftMargin=((dw*2)/5);
+		  re1.bottomMargin=dh/5;
+		  re1.topMargin=dh/8;
 
 		re2.width=dw;
 		re2.height = ((dh*5)/7)-10;
 		re2.topMargin=dh/6-20;
 
-		  vipbg_rl.setLayoutParams(vipbg_lp);
-		  vipbg_rl.invalidate();
+		//  vipbg_rl.setLayoutParams(vipbg_lp);
+		 // vipbg_rl.invalidate();
 
 		recyclerView2.setLayoutParams(re2);
 		recyclerView2.invalidate();
@@ -2599,7 +2590,7 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 					runOnUiThread(new Runnable() {
 						@Override
 						public void run() {
-							TastyToast.makeText(VlcVideoActivity.this,"连接已断开,10秒后重新连接", Toast.LENGTH_LONG,TastyToast.ERROR).show();
+							TastyToast.makeText(VlcVideoActivity2.this,"连接已断开,10秒后重新连接", Toast.LENGTH_LONG,TastyToast.ERROR).show();
 						}
 					});
 
@@ -2815,7 +2806,7 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 
 				}
 				//删除照片
-				Log.d("VlcVideoActivity", "删除照片:" + VlcVideoActivity.this.deleteFile(fname));
+				Log.d("VlcVideoActivity", "删除照片:" + VlcVideoActivity2.this.deleteFile(fname));
 
 				}catch (Exception e){
 					Log.d("WebsocketPushMsg", e.getMessage());
