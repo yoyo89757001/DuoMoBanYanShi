@@ -640,7 +640,7 @@ public class VlcVideoActivity2 extends BaseActivity implements SpeechSynthesizer
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Log.d(TAG, "创建222");
+	//	Log.d(TAG, "创建222");
 
 		baoCunBeanDao=MyApplication.myApplication.getDaoSession().getBaoCunBeanDao();
 		baoCunBean=baoCunBeanDao.load(123456L);
@@ -665,26 +665,26 @@ public class VlcVideoActivity2 extends BaseActivity implements SpeechSynthesizer
 		vipbg_im= (ImageView) findViewById(R.id.vipbg);
 		//vipbg_rl= (RelativeLayout) findViewById(R.id.vipbg_rl);
 
-		if (baoCunBean!=null && baoCunBean.getIsHengOrShu()){
-            Log.d(TAG, "横屏");
-            isHX=true;
-			/**
-			 * 设置为横屏
-			 */
-			if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
-				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-			}
-
-		}else {
-			isHX=false;
-			/**
-			 * 设置为竖屏
-			 */
-			if(this.getResources().getConfiguration().orientation != Configuration.ORIENTATION_PORTRAIT){
-				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                Log.d(TAG, "竖屏");
-			}
-		}
+//		if (baoCunBean!=null && baoCunBean.getIsHengOrShu()){
+//            Log.d(TAG, "横屏");
+//            isHX=true;
+//			/**
+//			 * 设置为横屏
+//			 */
+//			if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+//				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+//			}
+//
+//		}else {
+//			isHX=false;
+//			/**
+//			 * 设置为竖屏
+//			 */
+//			if(this.getResources().getConfiguration().orientation != Configuration.ORIENTATION_PORTRAIT){
+//				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+//                Log.d(TAG, "竖屏");
+//			}
+//		}
 
 	//	w = dm.widthPixels;
 	//	h = dm.heightPixels;
@@ -694,12 +694,13 @@ public class VlcVideoActivity2 extends BaseActivity implements SpeechSynthesizer
 			@Override
 			public void run() {
 				JPushInterface.setAlias(VlcVideoActivity2.this,1,"children");
+				//百度语音
+				initialEnv();
+				initialTts();
 			}
 		}).start();
 
-		//百度语音
-		initialEnv();
-		initialTts();
+
 
 		IjkMediaPlayer.loadLibrariesOnce(null);
 		IjkMediaPlayer.native_profileBegin("libijkplayer.so");

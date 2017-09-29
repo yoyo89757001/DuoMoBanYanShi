@@ -677,7 +677,7 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Log.d(TAG, "创建111");
+	//	Log.d(TAG, "创建111");
 
 		baoCunBeanDao=MyApplication.myApplication.getDaoSession().getBaoCunBeanDao();
 		baoCunBean=baoCunBeanDao.load(123456L);
@@ -700,26 +700,26 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 		vipbg_im= (ImageView) findViewById(R.id.vipbg);
 		vipbg_rl= (RelativeLayout) findViewById(R.id.vipbg_rl);
 
-		if (baoCunBean!=null && baoCunBean.getIsHengOrShu()){
-            Log.d(TAG, "横屏");
-            isHX=true;
-			/**
-			 * 设置为横屏
-			 */
-			if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
-				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-			}
-
-		}else {
-			isHX=false;
-			/**
-			 * 设置为竖屏
-			 */
-			if(this.getResources().getConfiguration().orientation != Configuration.ORIENTATION_PORTRAIT){
-				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                Log.d(TAG, "竖屏");
-			}
-		}
+//		if (baoCunBean!=null && baoCunBean.getIsHengOrShu()){
+//          //  Log.d(TAG, "横屏");
+//            isHX=true;
+//			/**
+//			 * 设置为横屏
+//			 */
+//			if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+//				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+//			}
+//
+//		}else {
+//			isHX=false;
+//			/**
+//			 * 设置为竖屏
+//			 */
+//			if(this.getResources().getConfiguration().orientation != Configuration.ORIENTATION_PORTRAIT){
+//				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+//                Log.d(TAG, "竖屏");
+//			}
+//		}
 
 	//	w = dm.widthPixels;
 	//	h = dm.heightPixels;
@@ -729,18 +729,19 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 			@Override
 			public void run() {
 				JPushInterface.setAlias(VlcVideoActivity.this,1,"children");
+				initialEnv();
+				initialTts();
 			}
 		}).start();
 
 		//百度语音
-		initialEnv();
-		initialTts();
 
 		IjkMediaPlayer.loadLibrariesOnce(null);
 		IjkMediaPlayer.native_profileBegin("libijkplayer.so");
 
 		tanchuangList=new Vector<>();
 		yuangongList=new Vector<>();
+
 		TanChuangBean bean=new TanChuangBean();
 		bean.setBytes(null);
 		bean.setName(null);
