@@ -115,11 +115,11 @@ public class VlcVideoActivity3 extends BaseActivity implements SpeechSynthesizer
 	private final static String TAG = "VlcVideoActivity";
 	private SurfaceView mSurfaceView;
 	private SurfaceHolder mSurfaceHolder;
-	private List<ShiPingBean> shiPingBeanList;
-	private TextView gonggaobiaoti;
-	private TextView gonggaoriqi;
-	private String fileType=null;
-	private String fileNames=null;
+//	private List<ShiPingBean> shiPingBeanList;
+//	private TextView gonggaobiaoti;
+//	private TextView gonggaoriqi;
+//	private String fileType=null;
+//	private String fileNames=null;
 
 	private SpeechSynthesizer mSpeechSynthesizer;
 	private String mSampleDirPath;
@@ -136,10 +136,10 @@ public class VlcVideoActivity3 extends BaseActivity implements SpeechSynthesizer
 	private static final int UI_CHANGE_INPUT_TEXT_SELECTION = 1;
 	private static final int UI_CHANGE_SYNTHES_TEXT_SELECTION = 2;
 
-	private String tupianPath=null;
+//	private String tupianPath=null;
 	private Media media;
 	private LinearLayout linearLayout;
-	private String ss;
+	//private String ss;
 	private MyReceiver myReceiver=null;
 	//private MyReceiverFile myReceiverFile=null;
 	private RecyclerView recyclerView;
@@ -149,14 +149,14 @@ public class VlcVideoActivity3 extends BaseActivity implements SpeechSynthesizer
 	//private Bitmap logo=null;
 	private MoShengRenBeanDao daoSession=null;
 	//private ShiBieJiLuBeanDao shiBieJiLuBeanDao=null;
-	private static List<String> voidePathList=new ArrayList<>();
-	private static List<String> photoPathList=new ArrayList<>();
+	//private static List<String> voidePathList=new ArrayList<>();
+	//private static List<String> photoPathList=new ArrayList<>();
 //	private static Vector<YongHuBean> moShengRenBean2List=new Vector<>();
 	private WrapContentLinearLayoutManager manager;
 	private WrapContentLinearLayoutManager manager2;
 	//private GridLayoutManager gridLayoutManager;
 	private static WebSocketClient webSocketClient=null;
-	private static int shiPingCount=0;
+//	private static int shiPingCount=0;
 	private Runnable runnable=null;
 	private Handler conntionHandler=null;
 	//public static String zhuji_string=null,shiping_string=null;
@@ -169,7 +169,7 @@ public class VlcVideoActivity3 extends BaseActivity implements SpeechSynthesizer
 	private IVLCVout.Callback callback;
 	private LibVLC libvlc;
 	private TextView xiaoshi,riqi,xingqi,tianqi1,tianqi0;
-	private TextView tianqi2;
+//	private TextView tianqi2;
 	//private MarqueeView marqueeView,marqueeView2;
 	//private  static Vector<String> stringVector=new Vector<>();
 	//private IjkMediaPlayer ijkMediaPlayer=null;
@@ -181,8 +181,8 @@ public class VlcVideoActivity3 extends BaseActivity implements SpeechSynthesizer
 	private int dw,dh;
 	private BaoCunBeanDao baoCunBeanDao=null;
 	private BaoCunBean baoCunBean=null;
-	private boolean isHX;
-	private ImageView vipbg_im;
+//	private boolean isHX;
+	//private ImageView vipbg_im;
 	private RelativeLayout vipbg_rl;
 	private  boolean isTiaoZhuang=true;
 	private boolean isMoShengRen=true;
@@ -685,7 +685,7 @@ public class VlcVideoActivity3 extends BaseActivity implements SpeechSynthesizer
 		RelativeLayout r= (RelativeLayout) findViewById(R.id.top_rl);
 		r.setBackground( new BitmapDrawable(getResources(),ImageUtil.decodeSampledBitmapFromResource(getResources(),R.drawable.bg11,dw,dh)));
 
-		vipbg_im= (ImageView) findViewById(R.id.vipbg);
+	//	vipbg_im= (ImageView) findViewById(R.id.vipbg);
 		vipbg_rl= (RelativeLayout) findViewById(R.id.vipbg_rl);
 
 //		if (baoCunBean!=null && baoCunBean.getIsHengOrShu()){
