@@ -690,15 +690,19 @@ public class VlcVideoActivity2 extends BaseActivity implements SpeechSynthesizer
 	//	h = dm.heightPixels;
 			isTiaoZhuang=true;
 
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				JPushInterface.setAlias(VlcVideoActivity2.this,1,"children");
-				//百度语音
-				initialEnv();
-				initialTts();
-			}
-		}).start();
+		try {
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					JPushInterface.setAlias(VlcVideoActivity2.this,1,"children");
+					//百度语音
+					initialEnv();
+					initialTts();
+				}
+			}).start();
+		}catch (Exception e){
+			Log.d(TAG, e.getMessage()+"");
+		}
 
 
 

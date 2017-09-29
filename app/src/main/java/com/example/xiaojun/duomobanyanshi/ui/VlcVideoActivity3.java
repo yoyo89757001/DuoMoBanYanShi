@@ -5,8 +5,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.BitmapDrawable;
@@ -109,8 +107,6 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 import sun.misc.BASE64Decoder;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
-
-;
 
 
 public class VlcVideoActivity3 extends BaseActivity implements SpeechSynthesizerListener,RecytviewCash {
@@ -716,16 +712,20 @@ public class VlcVideoActivity3 extends BaseActivity implements SpeechSynthesizer
 	//	w = dm.widthPixels;
 	//	h = dm.heightPixels;
 			isTiaoZhuang=true;
-
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				JPushInterface.setAlias(VlcVideoActivity3.this,1,"children");
-				//百度语音
-				initialEnv();
-				initialTts();
+			try {
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+						JPushInterface.setAlias(VlcVideoActivity3.this,1,"children");
+						//百度语音
+						initialEnv();
+						initialTts();
+					}
+				}).start();
+			}catch (Exception e){
+				Log.d(TAG, e.getMessage()+"");
 			}
-		}).start();
+
 
 
 

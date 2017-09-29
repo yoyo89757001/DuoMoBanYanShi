@@ -725,16 +725,21 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 	//	h = dm.heightPixels;
 			isTiaoZhuang=true;
 
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				JPushInterface.setAlias(VlcVideoActivity.this,1,"children");
-				initialEnv();
-				initialTts();
-			}
-		}).start();
+		try {
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					JPushInterface.setAlias(VlcVideoActivity.this,1,"children");
+					//百度语音
+					initialEnv();
+					initialTts();
+				}
+			}).start();
+		}catch (Exception e){
+			Log.d(TAG, e.getMessage()+"");
+		}
 
-		//百度语音
+
 
 		IjkMediaPlayer.loadLibrariesOnce(null);
 		IjkMediaPlayer.native_profileBegin("libijkplayer.so");
