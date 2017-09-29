@@ -1623,6 +1623,7 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 					link_chengshi();
 				}
 
+
 			} else {
 				if (intent.getAction().equals("duanxianchonglian")) {
 					//断线重连

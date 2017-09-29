@@ -858,6 +858,7 @@ public class VlcVideoActivity3 extends BaseActivity implements SpeechSynthesizer
 		riqi2.setText(DateUtils.timesRi(time));
 		xingqi.setText(DateUtils.getWeek(System.currentTimeMillis()));
 
+
 		//	mSurfaceView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
 //		LinearLayout relativeLayout= (LinearLayout) findViewById(R.id.ffgghh);
 //		relativeLayout.setOnClickListener(new View.OnClickListener() {
