@@ -9,7 +9,8 @@
 
     <ImageView
         android:id="@+id/logo_bg"
-        android:src="@drawable/ruitong_logo"
+        android:visibility="gone"
+        android:src="@drawable/dianxinlogo"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
         android:layout_width="70dp"

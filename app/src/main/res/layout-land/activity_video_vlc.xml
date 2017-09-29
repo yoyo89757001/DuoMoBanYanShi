@@ -12,7 +12,7 @@
         android:layout_width="160dp"
         android:layout_marginTop="24dp"
         android:layout_marginLeft="30dp"
-        android:background="@drawable/logo44"
+        android:background="@drawable/ruitong_logo"
         android:layout_height="60dp" />
 
     <LinearLayout

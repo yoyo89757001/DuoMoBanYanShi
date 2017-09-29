@@ -859,7 +859,7 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 		xiaoshi= (TextView) findViewById(R.id.xiaoshi);
 		riqi= (TextView) findViewById(R.id.riqi);
 		xingqi= (TextView) findViewById(R.id.xingqi);
-		final String time=(System.currentTimeMillis()/1000)+"";
+		final String time=(System.currentTimeMillis())+"";
 		xiaoshi.setText(DateUtils.timeMinute(time));
 		riqi.setText(DateUtils.timesTwo(time));
 		xingqi.setText(DateUtils.getWeek(System.currentTimeMillis()));
@@ -987,7 +987,7 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 		manager2 = new WrapContentLinearLayoutManager(VlcVideoActivity.this,LinearLayoutManager.HORIZONTAL, false,this);
 		recyclerView2.setLayoutManager(manager2);
 
-		adapter = new MyAdapter(R.layout.tanchuang_item2,tanchuangList);
+		adapter = new MyAdapter(R.layout.tanchuang_item,tanchuangList);
 
 		adapter2 = new MyAdapter2(R.layout.shibiejilu_item,yuangongList);
 		//adapter.openLoadAnimation();
@@ -1460,7 +1460,7 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 					case -1:
 						//陌生人
 						linearLayout_tanchuang.setBackgroundResource(R.drawable.ms_bg);
-						logo.setImageResource(R.drawable.dianxinlogo);
+						logo.setImageResource(R.drawable.ruitong_logo);
 						type.setText("陌生人");
 						name2.setText("");
 
@@ -1468,7 +1468,7 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 					case 0:
 						//员工
 						linearLayout_tanchuang.setBackgroundResource(R.drawable.yg_bg);
-						logo.setImageResource(R.drawable.dianxinlogo);
+						logo.setImageResource(R.drawable.ruitong_logo);
 						type.setText("员工");
 						name2.setText(item.getName());
 
@@ -1477,7 +1477,7 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 					case 1:
 						//访客
 						linearLayout_tanchuang.setBackgroundResource(R.drawable.yg_bg);
-						logo.setImageResource(R.drawable.dianxinlogo);
+						logo.setImageResource(R.drawable.ruitong_logo);
 						type.setText("访客");
 						name2.setText(item.getName());
 						break;
@@ -1615,7 +1615,7 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 			//Log.d(TAG, "intent:" + intent.getAction());
 
 			if (intent.getAction().equals(Intent.ACTION_TIME_TICK)) {
-				String time=(System.currentTimeMillis()/1000)+"";
+				String time=(System.currentTimeMillis())+"";
 				xiaoshi.setText(DateUtils.timeMinute(time));
 				riqi.setText(DateUtils.timesTwo(time));
 				xingqi.setText(DateUtils.getWeek(System.currentTimeMillis()));

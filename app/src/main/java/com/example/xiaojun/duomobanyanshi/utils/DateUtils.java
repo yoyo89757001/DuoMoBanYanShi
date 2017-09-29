@@ -190,8 +190,8 @@ public class DateUtils {
         SimpleDateFormat sdr = new SimpleDateFormat("HH:mm",Locale.CHINA);
         @SuppressWarnings("unused")
         long lcc = Long.valueOf(time);
-        int i = Integer.parseInt(time);
-        String times = sdr.format(new Date(i * 1000L));
+     //   int i = Integer.parseInt(time);
+        String times = sdr.format(new Date(lcc));
         return times;
 
     }
@@ -267,8 +267,28 @@ public class DateUtils {
         SimpleDateFormat sdr = new SimpleDateFormat("yyyy-MM-dd",Locale.CHINA);
         @SuppressWarnings("unused")
         long lcc = Long.valueOf(time);
-        int i = Integer.parseInt(time);
-        String times = sdr.format(new Date(i * 1000L));
+      //  int i = Integer.parseInt(time);
+        String times = sdr.format(new Date(lcc));
+        return times;
+
+    }
+
+    public static String timesRi(String time) {
+        SimpleDateFormat sdr = new SimpleDateFormat("MM.dd",Locale.CHINA);
+        @SuppressWarnings("unused")
+        long lcc = Long.valueOf(time);
+      //  int i = Integer.parseInt(time);
+        String times = sdr.format(new Date(lcc));
+        return times;
+
+    }
+
+    public static String timesNian(String time) {
+        SimpleDateFormat sdr = new SimpleDateFormat("yyyy",Locale.CHINA);
+        @SuppressWarnings("unused")
+        long lcc = Long.valueOf(time);
+      //  int i = Integer.parseInt(time);
+        String times = sdr.format(new Date(lcc));
         return times;
 
     }

@@ -191,6 +191,7 @@ public class VlcVideoActivity3 extends BaseActivity implements SpeechSynthesizer
 	private  boolean isTiaoZhuang=true;
 	private boolean isMoShengRen=true;
 	private TextView autofitTextView;
+	private TextView riqi2;
 
 //	static Handler handlerGongGao = new Handler();
 //	static Runnable runnableGongGao = new Runnable() {
@@ -850,9 +851,11 @@ public class VlcVideoActivity3 extends BaseActivity implements SpeechSynthesizer
 		xiaoshi= (TextView) findViewById(R.id.xiaoshi);
 		riqi= (TextView) findViewById(R.id.riqi);
 		xingqi= (TextView) findViewById(R.id.xingqi);
-		final String time=(System.currentTimeMillis()/1000)+"";
+		final String time=(System.currentTimeMillis())+"";
 		xiaoshi.setText(DateUtils.timeMinute(time));
-		riqi.setText(DateUtils.timesTwo(time));
+		riqi.setText(DateUtils.timesNian(time));
+		riqi2= (TextView) findViewById(R.id.riqi2);
+		riqi2.setText(DateUtils.timesRi(time));
 		xingqi.setText(DateUtils.getWeek(System.currentTimeMillis()));
 
 		//	mSurfaceView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
@@ -978,13 +981,13 @@ public class VlcVideoActivity3 extends BaseActivity implements SpeechSynthesizer
 		manager2 = new WrapContentLinearLayoutManager(VlcVideoActivity3.this,LinearLayoutManager.HORIZONTAL, false,this);
 		recyclerView2.setLayoutManager(manager2);
 
-		adapter = new MyAdapter(R.layout.tanchuang_item2,tanchuangList);
+		adapter = new MyAdapter(R.layout.tanchuang_item3,tanchuangList);
 
-		adapter2 = new MyAdapter2(R.layout.shibiejilu_item,yuangongList);
+		adapter2 = new MyAdapter2(R.layout.shibiejilu_item3,yuangongList);
 		//adapter.openLoadAnimation();
 		//adapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
 		recyclerView.setAdapter(adapter);
-		recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+		recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.HORIZONTAL));
 
 		recyclerView2.setAdapter(adapter2);
 		recyclerView2.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
@@ -1375,11 +1378,10 @@ public class VlcVideoActivity3 extends BaseActivity implements SpeechSynthesizer
 					//	richeng.setText("");
 					//	name.setText(item.getName());
 						//autoScrollTextView.setText("欢迎VIP访客 "+item.getName()+" 来本公司指导工作。");
-						Message message=Message.obtain();
-						message.what=111;
-						handler.sendMessage(message);
-						break;
-
+//						Message message=Message.obtain();
+//						message.what=111;
+//						handler.sendMessage(message);
+//						break;
 
 				}
 
@@ -1388,14 +1390,14 @@ public class VlcVideoActivity3 extends BaseActivity implements SpeechSynthesizer
 
 				Glide.with(MyApplication.getAppContext())
 						.load(zhuji+item.getTouxiang())
-						//.transform(new GlideCircleTransform(MyApplication.getAppContext(),2,Color.parseColor("#ffffffff")))
-						.transform(new GlideRoundTransform(MyApplication.getAppContext(), 6))
+						.transform(new GlideCircleTransform(MyApplication.getAppContext(),2,Color.parseColor("#ffffffff")))
+						//.transform(new GlideRoundTransform(MyApplication.getAppContext(), 6))
 						.into((ImageView) helper.getView(R.id.touxiang));
 			}else {
 				Glide.with(MyApplication.getAppContext())
 						.load(item.getBytes())
-						//.transform(new GlideCircleTransform(MyApplication.getAppContext(),2,Color.parseColor("#ffffffff")))
-						.transform(new GlideRoundTransform(MyApplication.getAppContext(), 6))
+						.transform(new GlideCircleTransform(MyApplication.getAppContext(),2,Color.parseColor("#ffffffff")))
+					//	.transform(new GlideRoundTransform(MyApplication.getAppContext(), 6))
 						.into((ImageView) helper.getView(R.id.touxiang));
 		    	}
 			}
@@ -1405,8 +1407,8 @@ public class VlcVideoActivity3 extends BaseActivity implements SpeechSynthesizer
 				ViewGroup.LayoutParams lp =  linearLayout_tanchuang.getLayoutParams();
 
 			    //弹窗的高宽
-				lp.width=dw/5-20;
-				lp.height=dh/3+80;
+				lp.width=dw/5;
+				lp.height=dw/5;
 				linearLayout_tanchuang.setLayoutParams(lp);
 			    linearLayout_tanchuang.invalidate();
 
@@ -1450,16 +1452,16 @@ public class VlcVideoActivity3 extends BaseActivity implements SpeechSynthesizer
 				switch (item.getType()){
 					case -1:
 						//陌生人
-						linearLayout_tanchuang.setBackgroundResource(R.drawable.ms_bg);
-						logo.setImageResource(R.drawable.dianxinlogo);
+						linearLayout_tanchuang.setBackgroundResource(R.drawable.yuangong2);
+						//logo.setImageResource(R.drawable.dianxinlogo);
 						type.setText("陌生人");
 						name2.setText("");
 
 						break;
 					case 0:
 						//员工
-						linearLayout_tanchuang.setBackgroundResource(R.drawable.yg_bg);
-						logo.setImageResource(R.drawable.dianxinlogo);
+						linearLayout_tanchuang.setBackgroundResource(R.drawable.yuangong2);
+						//logo.setImageResource(R.drawable.dianxinlogo);
 						type.setText("员工");
 						name2.setText(item.getName());
 
@@ -1467,8 +1469,8 @@ public class VlcVideoActivity3 extends BaseActivity implements SpeechSynthesizer
 
 					case 1:
 						//访客
-						linearLayout_tanchuang.setBackgroundResource(R.drawable.yg_bg);
-						logo.setImageResource(R.drawable.dianxinlogo);
+						linearLayout_tanchuang.setBackgroundResource(R.drawable.yuangong2);
+						//logo.setImageResource(R.drawable.dianxinlogo);
 						type.setText("访客");
 						name2.setText(item.getName());
 						break;
@@ -1606,9 +1608,11 @@ public class VlcVideoActivity3 extends BaseActivity implements SpeechSynthesizer
 			//Log.d(TAG, "intent:" + intent.getAction());
 
 			if (intent.getAction().equals(Intent.ACTION_TIME_TICK)) {
-				String time=(System.currentTimeMillis()/1000)+"";
+				String time=(System.currentTimeMillis())+"";
 				xiaoshi.setText(DateUtils.timeMinute(time));
-				riqi.setText(DateUtils.timesTwo(time));
+				riqi.setText(DateUtils.timesNian(time));
+				riqi2= (TextView) findViewById(R.id.riqi2);
+				riqi2.setText(DateUtils.timesRi(time));
 				xingqi.setText(DateUtils.getWeek(System.currentTimeMillis()));
 				if (DateUtils.timeMinute(time).equals("06:00")){
 					link_chengshi();
@@ -2333,11 +2337,11 @@ public class VlcVideoActivity3 extends BaseActivity implements SpeechSynthesizer
 			linearLayout.invalidate();
 
 			vipbg_lp.width = dw;
-		    vipbg_lp.height = (dh/3)*2-80;
+		    vipbg_lp.height = (dh*2)/5;
 
 		  re1.width=dw;
 		  re1.height = (dh/3)*2-80;
-		  re1.topMargin=dh/6-20;
+		  re1.topMargin=dh/8-10;
 
 		re2.width=dw;
 		re2.height = ((dh*5)/7)-10;
@@ -3153,8 +3157,8 @@ public class VlcVideoActivity3 extends BaseActivity implements SpeechSynthesizer
 
 					ResponseBody body = response.body();
 					//Log.d("AllConnects", "aa   "+response.body().string());
-
-					JsonObject jsonObject= GsonUtil.parse(body.string()).getAsJsonObject();
+					String s=body.string();
+					JsonObject jsonObject= GsonUtil.parse(s).getAsJsonObject();
 					Gson gson=new Gson();
 					//JsonObject object=jsonObject.get("ContentBean").getAsJsonObject();
 
