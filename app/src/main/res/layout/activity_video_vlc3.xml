@@ -62,7 +62,6 @@
         android:layout_height="30dp" />
 
 
-
     <LinearLayout
         android:id="@+id/video_root"
         android:layout_centerInParent="true"

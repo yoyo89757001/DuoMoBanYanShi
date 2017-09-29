@@ -7,6 +7,7 @@
     android:layout_marginRight="@dimen/dp_10"
     android:layout_height="match_parent">
 
+
     <ImageView
         android:id="@+id/logo_bg"
         android:src="@drawable/dianxinlogo"

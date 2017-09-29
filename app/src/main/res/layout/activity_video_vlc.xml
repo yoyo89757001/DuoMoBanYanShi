@@ -8,6 +8,7 @@
         android:background="@color/img_full_opaque"
         android:layout_height="30dp" />
 
+
     <LinearLayout
         android:id="@+id/video_root"
         android:layout_centerInParent="true"
