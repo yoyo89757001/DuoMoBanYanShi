@@ -38,14 +38,11 @@ import android.widget.RelativeLayout;
 
 import android.widget.TextView;
 import android.widget.Toast;
-import com.baidu.tts.auth.AuthInfo;
-import com.baidu.tts.client.SpeechError;
 import com.baidu.tts.client.SpeechSynthesizer;
 import com.baidu.tts.client.SpeechSynthesizerListener;
 
 import com.baidu.tts.client.TtsMode;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.xiaojun.duomobanyanshi.MyApplication;
@@ -58,7 +55,6 @@ import com.example.xiaojun.duomobanyanshi.beans.MoShengRenBean;
 import com.example.xiaojun.duomobanyanshi.beans.MoShengRenBean2;
 import com.example.xiaojun.duomobanyanshi.beans.MoShengRenBeanDao;
 import com.example.xiaojun.duomobanyanshi.beans.ShiBieBean;
-import com.example.xiaojun.duomobanyanshi.beans.ShiPingBean;
 import com.example.xiaojun.duomobanyanshi.beans.TanChuangBean;
 import com.example.xiaojun.duomobanyanshi.beans.TianQiBean;
 import com.example.xiaojun.duomobanyanshi.beans.TuPianBean;
@@ -67,6 +63,11 @@ import com.example.xiaojun.duomobanyanshi.beans.WBBean;
 import com.example.xiaojun.duomobanyanshi.beans.WeiShiBieBean;
 import com.example.xiaojun.duomobanyanshi.interfaces.RecytviewCash;
 
+import com.example.xiaojun.duomobanyanshi.tts.control.InitConfig;
+import com.example.xiaojun.duomobanyanshi.tts.control.MySyntherizer;
+import com.example.xiaojun.duomobanyanshi.tts.control.NonBlockSyntherizer;
+import com.example.xiaojun.duomobanyanshi.tts.listener.UiMessageListener;
+import com.example.xiaojun.duomobanyanshi.tts.util.OfflineResource;
 import com.example.xiaojun.duomobanyanshi.utils.DateUtils;
 import com.example.xiaojun.duomobanyanshi.utils.GlideCircleTransform;
 import com.example.xiaojun.duomobanyanshi.utils.GlideRoundTransform;
@@ -74,8 +75,6 @@ import com.example.xiaojun.duomobanyanshi.utils.GsonUtil;
 import com.example.xiaojun.duomobanyanshi.utils.ImageUtil;
 import com.example.xiaojun.duomobanyanshi.utils.LibVLCUtil;
 import com.example.xiaojun.duomobanyanshi.utils.Utils;
-
-import com.example.xiaojun.duomobanyanshi.view.AutoResizeTextView;
 import com.example.xiaojun.duomobanyanshi.view.DividerItemDecoration;
 import com.example.xiaojun.duomobanyanshi.view.WrapContentLinearLayoutManager;
 import com.github.florent37.viewanimator.ViewAnimator;
@@ -103,7 +102,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 import java.util.concurrent.TimeUnit;
 import cn.jpush.android.api.JPushInterface;
@@ -122,28 +123,24 @@ import sun.misc.BASE64Decoder;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
 
-public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerListener,RecytviewCash {
+public class VlcVideoActivity extends BaseActivity implements RecytviewCash {
 	private IVLCVout vlcVout=null;
 	private MediaPlayer mediaPlayer=null;
 	private final static String TAG = "VlcVideoActivity";
 	private SurfaceView mSurfaceView;
 	private SurfaceHolder mSurfaceHolder;
-///	private List<ShiPingBean> shiPingBeanList;
-	//private TextView gonggaobiaoti;
-//	private TextView gonggaoriqi;
-//	private String fileType=null;
-//	private String fileNames=null;
+	protected Handler mainHandler;
+	private String appId = "10467675";
+	private String appKey = "gXCi8VvDK186AV9nbllHxhtL";
+	private String secretKey = "alUEaMGkO4j5amQldv92dN4KTyrShq1v";
+	// TtsMode.MIX; 离在线融合，在线优先； TtsMode.ONLINE 纯在线； 没有纯离线
+	private TtsMode ttsMode = TtsMode.MIX;
+	// 离线发音选择，VOICE_FEMALE即为离线女声发音。
+	// assets目录下bd_etts_speech_female.data为离线男声模型；bd_etts_speech_female.data为离线女声模型
+	private String offlineVoice = OfflineResource.VOICE_FEMALE;
+	// 主控制类，所有合成控制方法从这个类开始
+	private MySyntherizer synthesizer;
 
-	private SpeechSynthesizer mSpeechSynthesizer;
-	private String mSampleDirPath;
-	private static final String SAMPLE_DIR_NAME = "baiduTTS";
-	private static final String SPEECH_FEMALE_MODEL_NAME = "bd_etts_speech_female.dat";
-	private static final String SPEECH_MALE_MODEL_NAME = "bd_etts_speech_male.dat";
-	private static final String TEXT_MODEL_NAME = "bd_etts_text.dat";
-	//private static final String LICENSE_FILE_NAME = "temp_license";
-	private static final String ENGLISH_SPEECH_FEMALE_MODEL_NAME = "bd_etts_speech_female_en.dat";
-	private static final String ENGLISH_SPEECH_MALE_MODEL_NAME = "bd_etts_speech_male_en.dat";
-	private static final String ENGLISH_TEXT_MODEL_NAME = "bd_etts_text_en.dat";
 
 	private static final int PRINT = 0;
 	private static final int UI_CHANGE_INPUT_TEXT_SELECTION = 1;
@@ -221,6 +218,8 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 //
 //		}
 //	};
+
+
 
 	public  Handler handler=new Handler(new Handler.Callback() {
 
@@ -493,79 +492,7 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 		}
 	});
 
-	/*
-     * @param arg0
-     */
-	@Override
-	public void onSynthesizeStart(String utteranceId) {
-		toPrint("onSynthesizeStart utteranceId=" + utteranceId);
-	}
 
-	/**
-	 * 合成数据和进度的回调接口，分多次回调
-	 *
-	 * @param utteranceId
-	 * @param data 合成的音频数据。该音频数据是采样率为16K，2字节精度，单声道的pcm数据。
-	 * @param progress 文本按字符划分的进度，比如:你好啊 进度是0-3
-	 */
-	@Override
-	public void onSynthesizeDataArrived(String utteranceId, byte[] data, int progress) {
-		// toPrint("onSynthesizeDataArrived");
-		//mHandler.sendMessage(mHandler.obtainMessage(UI_CHANGE_SYNTHES_TEXT_SELECTION, progress, 0));
-	}
-
-	/**
-	 * 合成正常结束，每句合成正常结束都会回调，如果过程中出错，则回调onError，不再回调此接口
-	 *
-	 * @param utteranceId
-	 */
-	@Override
-	public void onSynthesizeFinish(String utteranceId) {
-		//toPrint("onSynthesizeFinish utteranceId=" + utteranceId);
-	}
-
-	/**
-	 * 播放开始，每句播放开始都会回调
-	 *
-	 * @param utteranceId
-	 */
-	@Override
-	public void onSpeechStart(String utteranceId) {
-		//toPrint("onSpeechStart utteranceId=" + utteranceId);
-	}
-
-	/**
-	 * 播放进度回调接口，分多次回调
-	 *
-	 * @param utteranceId
-	 * @param progress 文本按字符划分的进度，比如:你好啊 进度是0-3
-	 */
-	@Override
-	public void onSpeechProgressChanged(String utteranceId, int progress) {
-		// toPrint("onSpeechProgressChanged");
-		//mHandler.sendMessage(mHandler.obtainMessage(UI_CHANGE_INPUT_TEXT_SELECTION, progress, 0));
-	}
-
-	/**
-	 * 播放正常结束，每句播放正常结束都会回调，如果过程中出错，则回调onError,不再回调此接口
-	 *
-	 * @param utteranceId
-	 */
-	@Override
-	public void onSpeechFinish(String utteranceId) {
-		//toPrint("onSpeechFinish utteranceId=" + utteranceId);
-	}
-
-	/**
-	 * 当合成或者播放过程中出错时回调此接口
-	 *
-	 * @param utteranceId
-	 * @param error 包含错误码和错误信息
-	 */
-	@Override
-	public void onError(String utteranceId, SpeechError error) {
-		toPrint("onError error=" + "(" + error.code + ")" + error.description + "--utteranceId=" + utteranceId);
-	}
 
 	@Override
 	public void reset() {
@@ -636,12 +563,12 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 //			return photoPathList.size();
 //		}
 //	}
-	/**
-	 * 将文件生成位图
-	 * @param
-	 * @return
-	 * @throws IOException
-	 */
+//	/**
+//	 * 将文件生成位图
+//	 * @param
+//	 * @return
+//	 * @throws IOException
+//	 */
 //	public BitmapDrawable getImageDrawable(String path)
 //			throws IOException
 //	{
@@ -694,51 +621,30 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 		dh = Utils.getDisplaySize(VlcVideoActivity.this).y;
 
 		setContentView(R.layout.activity_video_vlc);
+		mainHandler = new Handler() {
+			/*
+             * @param msg
+             */
+			@Override
+			public void handleMessage(Message msg) {
+				super.handleMessage(msg);
+				Log.d(TAG, "msg:" + msg);
+			}
+
+		};
+
+		Utils.initPermission(VlcVideoActivity.this);
+		initialTts();
+
 		RelativeLayout r= (RelativeLayout) findViewById(R.id.top_rl);
 		r.setBackground( new BitmapDrawable(getResources(),ImageUtil.decodeSampledBitmapFromResource(getResources(),R.drawable.bg11,dw,dh)));
 
 	//	vipbg_im= (ImageView) findViewById(R.id.vipbg);
 		vipbg_rl= (RelativeLayout) findViewById(R.id.vipbg_rl);
 
-//		if (baoCunBean!=null && baoCunBean.getIsHengOrShu()){
-//          //  Log.d(TAG, "横屏");
-//            isHX=true;
-//			/**
-//			 * 设置为横屏
-//			 */
-//			if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
-//				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-//			}
-//
-//		}else {
-//			isHX=false;
-//			/**
-//			 * 设置为竖屏
-//			 */
-//			if(this.getResources().getConfiguration().orientation != Configuration.ORIENTATION_PORTRAIT){
-//				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-//                Log.d(TAG, "竖屏");
-//			}
-//		}
+		isTiaoZhuang=true;
 
-	//	w = dm.widthPixels;
-	//	h = dm.heightPixels;
-			isTiaoZhuang=true;
-
-		try {
-			new Thread(new Runnable() {
-				@Override
-				public void run() {
-					JPushInterface.setAlias(VlcVideoActivity.this,1,"children");
-					//百度语音
-					initialEnv();
-					initialTts();
-				}
-			}).start();
-		}catch (Exception e){
-			Log.d(TAG, e.getMessage()+"");
-		}
-
+		JPushInterface.setAlias(VlcVideoActivity.this,1,"children");
 
 
 		IjkMediaPlayer.loadLibrariesOnce(null);
@@ -1146,132 +1052,65 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 
 	}
 
-
-	private void initialEnv() {
-		if (mSampleDirPath == null) {
-			String sdcardPath = Environment.getExternalStorageDirectory().toString();
-			mSampleDirPath = sdcardPath + "/" + SAMPLE_DIR_NAME;
-		}
-		Utils.makeDir(mSampleDirPath);
-		Utils.copyFromAssetsToSdcard(false, SPEECH_FEMALE_MODEL_NAME, mSampleDirPath + "/" + SPEECH_FEMALE_MODEL_NAME,this);
-		Utils.copyFromAssetsToSdcard(false, SPEECH_MALE_MODEL_NAME, mSampleDirPath + "/" + SPEECH_MALE_MODEL_NAME,this);
-		Utils.copyFromAssetsToSdcard(false, TEXT_MODEL_NAME, mSampleDirPath + "/" + TEXT_MODEL_NAME,this);
-		//Utils.copyFromAssetsToSdcard(false, LICENSE_FILE_NAME, mSampleDirPath + "/" + LICENSE_FILE_NAME,this);
-		Utils.copyFromAssetsToSdcard(false, "english/" + ENGLISH_SPEECH_FEMALE_MODEL_NAME, mSampleDirPath + "/"
-				+ ENGLISH_SPEECH_FEMALE_MODEL_NAME,this);
-		Utils.copyFromAssetsToSdcard(false, "english/" + ENGLISH_SPEECH_MALE_MODEL_NAME, mSampleDirPath + "/"
-				+ ENGLISH_SPEECH_MALE_MODEL_NAME,this);
-		Utils.copyFromAssetsToSdcard(false, "english/" + ENGLISH_TEXT_MODEL_NAME, mSampleDirPath + "/"
-				+ ENGLISH_TEXT_MODEL_NAME,this);
+	@Override
+	public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+		// 此处为android 6.0以上动态授权的回调，用户自行实现。
+		Log.d(TAG, "requestCode:" + requestCode);
 	}
 
-	private void initialTts() {
-		this.mSpeechSynthesizer = SpeechSynthesizer.getInstance();
-		this.mSpeechSynthesizer.setContext(this);
-		this.mSpeechSynthesizer.setSpeechSynthesizerListener(this);
-		// 文本模型文件路径 (离线引擎使用)
-		this.mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_TEXT_MODEL_FILE, mSampleDirPath + "/"
-				+ TEXT_MODEL_NAME);
-		// 声学模型文件路径 (离线引擎使用)
-		this.mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_SPEECH_MODEL_FILE, mSampleDirPath + "/"
-				+ SPEECH_FEMALE_MODEL_NAME);
-		// 本地授权文件路径,如未设置将使用默认路径.设置临时授权文件路径，LICENCE_FILE_NAME请替换成临时授权文件的实际路径，仅在使用临时license文件时需要进行设置，如果在[应用管理]中开通了正式离线授权，不需要设置该参数，建议将该行代码删除（离线引擎）
-		// 如果合成结果出现临时授权文件将要到期的提示，说明使用了临时授权文件，请删除临时授权即可。
-		//this.mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_LICENCE_FILE, mSampleDirPath + "/"
-			//	+ LICENSE_FILE_NAME);
-		// 请替换为语音开发者平台上注册应用得到的App ID (离线授权)
-		this.mSpeechSynthesizer.setAppId("9990556"/*这里只是为了让Demo运行使用的APPID,请替换成自己的id。*/);
-		// 请替换为语音开发者平台注册应用得到的apikey和secretkey (在线授权)
-		this.mSpeechSynthesizer.setApiKey("0fxLiYpG9gUC9660agtU3rEU",
-				"68288f5f80eaa85a6384ac30a14b622e"/*这里只是为了让Demo正常运行使用APIKey,请替换成自己的APIKey*/);
-		// 发音人（在线引擎），可用参数为0,1,2,3。。。（服务器端会动态增加，各值含义参考文档，以文档说明为准。0--普通女声，1--普通男声，2--特别男声，3--情感男声。。。）
-		this.mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_SPEAKER, "4");
-		// 设置Mix模式的合成策略
-		this.mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_MIX_MODE, SpeechSynthesizer.MIX_MODE_DEFAULT);
-		//合成引擎速度优化等级，取值范围[0, 2]，值越大速度越快（离线引擎）
-		this.mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_VOCODER_OPTIM_LEVEL, "2");
 
-		// 授权检测接口(只是通过AuthInfo进行检验授权是否成功。)
-		// AuthInfo接口用于测试开发者是否成功申请了在线或者离线授权，如果测试授权成功了，可以删除AuthInfo部分的代码（该接口首次验证时比较耗时），不会影响正常使用（合成使用时SDK内部会自动验证授权）
-		AuthInfo authInfo = this.mSpeechSynthesizer.auth(TtsMode.MIX);
 
-		if (authInfo.isSuccess()) {
-			toPrint("auth success");
-		} else {
-			String errorMsg = authInfo.getTtsError().getDetailMessage();
-			toPrint("auth failed errorMsg=" + errorMsg);
-		}
 
-		// 初始化tts
-		mSpeechSynthesizer.initTts(TtsMode.MIX);
-		// 加载离线英文资源（提供离线英文合成功能）
-		int result =
-				mSpeechSynthesizer.loadEnglishModel(mSampleDirPath + "/" + ENGLISH_TEXT_MODEL_NAME, mSampleDirPath
-						+ "/" + ENGLISH_SPEECH_FEMALE_MODEL_NAME);
-		toPrint("loadEnglishModel result=" + result);
+	/**
+	 * 初始化引擎，需要的参数均在InitConfig类里
+	 * <p>
+	 * DEMO中提供了3个SpeechSynthesizerListener的实现
+	 * MessageListener 仅仅用log.i记录日志，在logcat中可以看见
+	 * UiMessageListener 在MessageListener的基础上，对handler发送消息，实现UI的文字更新
+	 * FileSaveListener 在UiMessageListener的基础上，使用 onSynthesizeDataArrived回调，获取音频流
+	 */
+	protected void initialTts() {
+		// 设置初始化参数
+		SpeechSynthesizerListener listener = new UiMessageListener(mainHandler); // 此处可以改为 含有您业务逻辑的SpeechSynthesizerListener的实现类
+		Map<String, String> params = getParams();
+		// appId appKey secretKey 网站上您申请的应用获取。注意使用离线合成功能的话，需要应用中填写您app的包名。包名在build.gradle中获取。
+		InitConfig initConfig = new InitConfig(appId, appKey, secretKey, ttsMode, offlineVoice, params, listener);
+		synthesizer = new NonBlockSyntherizer(this, initConfig, mainHandler); // 此处可以改为MySyntherizer 了解调用过程
 
-	}
-
-	private void toPrint(String str) {
-		Message msg = Message.obtain();
-		msg.obj = str;
-		this.mHandler.sendMessage(msg);
-	}
-
-	private Handler mHandler = new Handler() {
-
-		/*
-         * @param msg
-         */
-		@Override
-		public void handleMessage(Message msg) {
-			super.handleMessage(msg);
-			int what = msg.what;
-			switch (what) {
-				case PRINT:
-					print(msg);
-					break;
-//				case UI_CHANGE_INPUT_TEXT_SELECTION:  //播放进度
-//					if (msg.arg1 <= mInput.getText().length()) {
-//						mInput.setSelection(0,msg.arg1);
-//					}
-//					break;
-//				case UI_CHANGE_SYNTHES_TEXT_SELECTION:  //合成进度
-//					SpannableString colorfulText = new SpannableString(mInput.getText().toString());
-//					if (msg.arg1 <= colorfulText.toString().length()) {
-//						colorfulText.setSpan(new ForegroundColorSpan(Color.GRAY), 0, msg.arg1, Spannable
-//								.SPAN_EXCLUSIVE_EXCLUSIVE);
-//						mInput.setText(colorfulText);
-//					}
-//					break;
-				default:
-					break;
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					Thread.sleep(9000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				synthesizer.speak("dfdssdfsd");
 			}
-		}
+		}).start();
 
-	};
-
-	private void print(Message msg) {
-		String message = (String) msg.obj;
-		if (message != null) {
-			Log.w(TAG, message);
-			//Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-
-		}
 	}
 
-//
-//	/**
-//	 * 打印引擎so库版本号及基本信息和model文件的基本信息
-//	 */
-//	private void printEngineInfo() {
-//		toPrint("EngineVersioin=" + SynthesizerTool.getEngineVersion());
-//		toPrint("EngineInfo=" + SynthesizerTool.getEngineInfo());
-//		String textModelInfo = SynthesizerTool.getModelInfo(mSampleDirPath + "/" + TEXT_MODEL_NAME);
-//		toPrint("textModelInfo=" + textModelInfo);
-//		String speechModelInfo = SynthesizerTool.getModelInfo(mSampleDirPath + "/" + SPEECH_FEMALE_MODEL_NAME);
-//		toPrint("speechModelInfo=" + speechModelInfo);
-//	}
+	/**
+	 * 合成的参数，可以初始化时填写，也可以在合成前设置。
+	 *
+	 * @return
+	 */
+	protected Map<String, String> getParams() {
+		Map<String, String> params = new HashMap<String, String>();
+		// 以下参数均为选填
+		params.put(SpeechSynthesizer.PARAM_SPEAKER, "4"); // 设置在线发声音人： 0 普通女声（默认） 1 普通男声 2 特别男声 3 情感男声<度逍遥> 4 情感儿童声<度丫丫>
+		params.put(SpeechSynthesizer.PARAM_VOLUME, "5"); // 设置合成的音量，0-9 ，默认 5
+		params.put(SpeechSynthesizer.PARAM_SPEED, "5");// 设置合成的语速，0-9 ，默认 5
+		params.put(SpeechSynthesizer.PARAM_PITCH, "5");// 设置合成的语调，0-9 ，默认 5
+		params.put(SpeechSynthesizer.PARAM_MIX_MODE, SpeechSynthesizer.MIX_MODE_HIGH_SPEED_NETWORK);         // 该参数设置为TtsMode.MIX生效。即纯在线模式不生效。
+		// MIX_MODE_DEFAULT 默认 ，wifi状态下使用在线，非wifi离线。在线状态下，请求超时6s自动转离线
+		// MIX_MODE_HIGH_SPEED_SYNTHESIZE_WIFI wifi状态下使用在线，非wifi离线。在线状态下， 请求超时1.2s自动转离线
+		// MIX_MODE_HIGH_SPEED_NETWORK ， 3G 4G wifi状态下使用在线，其它状态离线。在线状态下，请求超时1.2s自动转离线
+		// MIX_MODE_HIGH_SPEED_SYNTHESIZE, 2G 3G 4G wifi状态下使用在线，其它状态离线。在线状态下，请求超时1.2s自动转离线
+		return params;
+	}
+
 
 //	// 遍历接收一个文件路径，然后把文件子目录中的所有文件遍历并输出来
 //	private void getAllFiles(File root){
@@ -1309,8 +1148,6 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 	}
 
 	public  class MyAdapter extends BaseQuickAdapter<TanChuangBean,BaseViewHolder> {
-
-
 
 		private MyAdapter(int layoutResId, List<TanChuangBean> data) {
 			super(layoutResId, data);
@@ -1648,12 +1485,7 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 							return;
 						}
 
-//						Log.d(TAG, "跳转");
-//						WebsocketPushMsg websocketPushMsg = new WebsocketPushMsg();
-//						websocketPushMsg.close();
-//						if (baoCunBean.getZhujiDiZhi() != null && baoCunBean.getShipingIP() != null) {
-//							websocketPushMsg.startConnection(baoCunBean.getZhujiDiZhi(), baoCunBean.getShipingIP());
-//						}
+
 
 
 					} catch (Exception e) {
@@ -2077,10 +1909,6 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 //				}
 //			}
 //		}
-
-
-
-
 //		if (ijkVideoView!=null){
 //			if (!ijkVideoView.isPlaying()){
 //				ijkVideoView.start();
@@ -2163,6 +1991,7 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 
 	@Override
 	protected void onDestroy() {
+		synthesizer.release();
 		super.onDestroy();
 
 
@@ -2176,7 +2005,6 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 
 		//ijkVideoView.pause();
 		//ijkVideoView.stopPlayback();
-		this.mSpeechSynthesizer.release();
 		handler.removeCallbacksAndMessages(null);
 		if (myReceiver!=null)
 		unregisterReceiver(myReceiver);
@@ -2574,7 +2402,7 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 							MoShengRenBean bean = new MoShengRenBean(dataBean.getTrack(), "sss");
 						//	mSpeechSynthesizer.speak("欢迎你来访XX幼儿园");
 							daoSession.insert(bean);
-							Log.d("WebsocketPushMsg", "isMoShengRen:" + isMoShengRen);
+
 							if (isMoShengRen){
 								Message message = new Message();
 								message.arg1 = 2;
@@ -2637,15 +2465,14 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 			webSocketClient.connect();
 		}
 		private void close(){
-			Log.d("WebsocketPushMsg", "终止runnable00");
+
 			if (conntionHandler!=null && runnable!=null){
 				conntionHandler.removeCallbacks(runnable);
 				conntionHandler=null;
 				runnable=null;
-				Log.d("WebsocketPushMsg", "终止runnable11");
+
 			}
 			if (webSocketClient!=null){
-				Log.d("WebsocketPushMsg", "终止runnable22");
 
 				if (webSocketClient.isOpen()){
 					webSocketClient.close();
@@ -2653,7 +2480,7 @@ public class VlcVideoActivity extends BaseActivity implements SpeechSynthesizerL
 
 				webSocketClient=null;
 				System.gc();
-				Log.d("WebsocketPushMsg", "终止webSocketClient");
+
 
 			}
 

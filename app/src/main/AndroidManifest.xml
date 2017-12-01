@@ -39,6 +39,8 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_SETTINGS" />
 
+
+
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -63,7 +65,9 @@
         <!-- <meta-data -->
         <!-- android:name="com.baidu.lbsapi.API_KEY" -->
         <!-- android:value="uTTmEt0NeHSsgAKsXGLAMC8mvg6zPNLm" /> -->
-
+        <!--<meta-data-->
+            <!--android:name="com.baidu.lbsapi.API_KEY"-->
+            <!--android:value="OkLLk9ojkdcEsUEWTpc2MVoY6DDSptik" />-->
 
         <!-- Rich push 核心功能 since 2.0.6 -->
         <activity

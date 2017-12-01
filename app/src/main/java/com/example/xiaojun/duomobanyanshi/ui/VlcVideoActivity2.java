@@ -5,8 +5,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.BitmapDrawable;
@@ -34,7 +32,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.baidu.tts.auth.AuthInfo;
 import com.baidu.tts.client.SpeechError;
 import com.baidu.tts.client.SpeechSynthesizer;
@@ -53,7 +50,6 @@ import com.example.xiaojun.duomobanyanshi.beans.MoShengRenBean;
 import com.example.xiaojun.duomobanyanshi.beans.MoShengRenBean2;
 import com.example.xiaojun.duomobanyanshi.beans.MoShengRenBeanDao;
 import com.example.xiaojun.duomobanyanshi.beans.ShiBieBean;
-import com.example.xiaojun.duomobanyanshi.beans.ShiPingBean;
 import com.example.xiaojun.duomobanyanshi.beans.TanChuangBean;
 import com.example.xiaojun.duomobanyanshi.beans.TianQiBean;
 import com.example.xiaojun.duomobanyanshi.beans.TuPianBean;
@@ -63,7 +59,6 @@ import com.example.xiaojun.duomobanyanshi.beans.WeiShiBieBean;
 import com.example.xiaojun.duomobanyanshi.interfaces.RecytviewCash;
 import com.example.xiaojun.duomobanyanshi.utils.DateUtils;
 import com.example.xiaojun.duomobanyanshi.utils.GlideCircleTransform;
-import com.example.xiaojun.duomobanyanshi.utils.GlideRoundTransform;
 import com.example.xiaojun.duomobanyanshi.utils.GsonUtil;
 import com.example.xiaojun.duomobanyanshi.utils.ImageUtil;
 import com.example.xiaojun.duomobanyanshi.utils.LibVLCUtil;
@@ -1176,12 +1171,15 @@ public class VlcVideoActivity2 extends BaseActivity implements SpeechSynthesizer
 		}
 
 		// 初始化tts
-		mSpeechSynthesizer.initTts(TtsMode.MIX);
-		// 加载离线英文资源（提供离线英文合成功能）
-		int result =
-				mSpeechSynthesizer.loadEnglishModel(mSampleDirPath + "/" + ENGLISH_TEXT_MODEL_NAME, mSampleDirPath
-						+ "/" + ENGLISH_SPEECH_FEMALE_MODEL_NAME);
-		toPrint("loadEnglishModel result=" + result);
+		if (mSpeechSynthesizer!=null){
+			mSpeechSynthesizer.initTts(TtsMode.MIX);
+			// 加载离线英文资源（提供离线英文合成功能）
+			int result =
+					mSpeechSynthesizer.loadEnglishModel(mSampleDirPath + "/" + ENGLISH_TEXT_MODEL_NAME, mSampleDirPath
+							+ "/" + ENGLISH_SPEECH_FEMALE_MODEL_NAME);
+			toPrint("loadEnglishModel result=" + result);
+		}
+
 
 	}
 
@@ -1619,18 +1617,18 @@ public class VlcVideoActivity2 extends BaseActivity implements SpeechSynthesizer
 					link_chengshi();
 				}
 
-			} else {
+			}
 				if (intent.getAction().equals("duanxianchonglian")) {
 					//断线重连
 					//if (webSocketClient!=null){
 					//	if (!webSocketClient.isOpen()){
 					try {
-						Log.d(TAG, "isTiaoZhuang:" + isTiaoZhuang);
+						//Log.d(TAG, "isTiaoZhuang:" + isTiaoZhuang);
 						//恢复视频流
 						if (isTiaoZhuang){
 
 							startActivity(new Intent(VlcVideoActivity2.this, ErWeiMaActivity.class).putExtra("ttt",2));
-							Log.d(TAG, "断线开启新Activity");
+						//	Log.d(TAG, "断线开启新Activity");
 							finish();
 						}else {
 
@@ -1896,11 +1894,10 @@ public class VlcVideoActivity2 extends BaseActivity implements SpeechSynthesizer
 //					});
 				}
 				if (intent.getAction().equals("guanbi")){
+					Log.d(TAG, "广播关闭");
 					finish();
 				}
 
-
-			}
 		}
 
 	}
@@ -2027,12 +2024,16 @@ public class VlcVideoActivity2 extends BaseActivity implements SpeechSynthesizer
 		if (baoCunBean!=null && baoCunBean.getZhujiDiZhi()!=null){
 
 			try {
+				WebsocketPushMsg websocketPushMsg = new WebsocketPushMsg();
+				websocketPushMsg.close();
+
 				String[] a1=baoCunBean.getZhujiDiZhi().split("//");
 				String[] b1=a1[1].split(":");
 				zhuji="http://"+b1[0];
-				WebsocketPushMsg websocketPushMsg = new WebsocketPushMsg();
-				websocketPushMsg.close();
+
 				if (baoCunBean.getShipingIP() != null ) {
+					//Log.d(TAG, baoCunBean.getZhujiDiZhi());
+					//Log.d(TAG, "rtsp://" + baoCunBean.getShipingIP() + ":554/user=admin_password=tlJwpbo6_channel=1_stream=0.sdp?real_stream");
 					websocketPushMsg.startConnection(baoCunBean.getZhujiDiZhi(), "rtsp://"+baoCunBean.getShipingIP()+":554/user=admin_password=tlJwpbo6_channel=1_stream=0.sdp?real_stream");
 				}
 			} catch (URISyntaxException e) {
@@ -2503,12 +2504,10 @@ public class VlcVideoActivity2 extends BaseActivity implements SpeechSynthesizer
 				public void onOpen(ServerHandshake serverHandshake) {
 					//Log.d("WebsocketPushMsg onOpen", serverHandshake.getHttpStatusMessage());
 
-
 				}
 
 				@Override
 				public void onMessage(String ss) {
-
 
 					JsonObject jsonObject= GsonUtil.parse(ss).getAsJsonObject();
 					Gson gson=new Gson();
@@ -2564,7 +2563,7 @@ public class VlcVideoActivity2 extends BaseActivity implements SpeechSynthesizer
 							MoShengRenBean bean = new MoShengRenBean(dataBean.getTrack(), "sss");
 						//	mSpeechSynthesizer.speak("欢迎你来访XX幼儿园");
 							daoSession.insert(bean);
-							Log.d("WebsocketPushMsg", "isMoShengRen:" + isMoShengRen);
+
 							if (isMoShengRen){
 								Message message = new Message();
 								message.arg1 = 2;
@@ -2593,6 +2592,7 @@ public class VlcVideoActivity2 extends BaseActivity implements SpeechSynthesizer
 
 				@Override
 				public void onClose(int i, String s, boolean b) {
+
 					runOnUiThread(new Runnable() {
 						@Override
 						public void run() {
@@ -2627,23 +2627,22 @@ public class VlcVideoActivity2 extends BaseActivity implements SpeechSynthesizer
 			webSocketClient.connect();
 		}
 		private void close(){
-			Log.d("WebsocketPushMsg", "终止runnable00");
+			//Log.d("WebsocketPushMsg", "终止runnable00");
 			if (conntionHandler!=null && runnable!=null){
 				conntionHandler.removeCallbacks(runnable);
 				conntionHandler=null;
 				runnable=null;
-				Log.d("WebsocketPushMsg", "终止runnable11");
+			//	Log.d("WebsocketPushMsg", "终止runnable11");
 			}
 			if (webSocketClient!=null){
-				Log.d("WebsocketPushMsg", "终止runnable22");
+			//	Log.d("WebsocketPushMsg", "终止runnable22");
 
 				if (webSocketClient.isOpen()){
 					webSocketClient.close();
 				}
-
 				webSocketClient=null;
 				System.gc();
-				Log.d("WebsocketPushMsg", "终止webSocketClient");
+			//	Log.d("WebsocketPushMsg", "终止webSocketClient");
 
 			}
 

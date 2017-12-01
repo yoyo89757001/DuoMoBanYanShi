@@ -124,10 +124,10 @@ public class VlcVideoActivity3 extends BaseActivity implements SpeechSynthesizer
 	private SpeechSynthesizer mSpeechSynthesizer;
 	private String mSampleDirPath;
 	private static final String SAMPLE_DIR_NAME = "baiduTTS";
-	private static final String SPEECH_FEMALE_MODEL_NAME = "bd_etts_speech_female.dat";
-	private static final String SPEECH_MALE_MODEL_NAME = "bd_etts_speech_male.dat";
-	private static final String TEXT_MODEL_NAME = "bd_etts_text.dat";
-	//private static final String LICENSE_FILE_NAME = "temp_license";
+	private static final String SPEECH_FEMALE_MODEL_NAME = "bd_etts_ch_speech_female.dat";
+	private static final String SPEECH_MALE_MODEL_NAME = "bd_etts_ch_speech_male.dat";
+	private static final String TEXT_MODEL_NAME = "bd_etts_ch_text.dat";
+	private static final String LICENSE_FILE_NAME = "temp_license";
 	private static final String ENGLISH_SPEECH_FEMALE_MODEL_NAME = "bd_etts_speech_female_en.dat";
 	private static final String ENGLISH_SPEECH_MALE_MODEL_NAME = "bd_etts_speech_male_en.dat";
 	private static final String ENGLISH_TEXT_MODEL_NAME = "bd_etts_text_en.dat";
@@ -719,7 +719,7 @@ public class VlcVideoActivity3 extends BaseActivity implements SpeechSynthesizer
 						JPushInterface.setAlias(VlcVideoActivity3.this,1,"children");
 						//百度语音
 						initialEnv();
-						initialTts();
+
 					}
 				}).start();
 			}catch (Exception e){
@@ -1143,16 +1143,26 @@ public class VlcVideoActivity3 extends BaseActivity implements SpeechSynthesizer
 			mSampleDirPath = sdcardPath + "/" + SAMPLE_DIR_NAME;
 		}
 		Utils.makeDir(mSampleDirPath);
-		Utils.copyFromAssetsToSdcard(false, SPEECH_FEMALE_MODEL_NAME, mSampleDirPath + "/" + SPEECH_FEMALE_MODEL_NAME,this);
-		Utils.copyFromAssetsToSdcard(false, SPEECH_MALE_MODEL_NAME, mSampleDirPath + "/" + SPEECH_MALE_MODEL_NAME,this);
-		Utils.copyFromAssetsToSdcard(false, TEXT_MODEL_NAME, mSampleDirPath + "/" + TEXT_MODEL_NAME,this);
-		//Utils.copyFromAssetsToSdcard(false, LICENSE_FILE_NAME, mSampleDirPath + "/" + LICENSE_FILE_NAME,this);
+		Utils.copyFromAssetsToSdcard(false,"english/"+ SPEECH_FEMALE_MODEL_NAME, mSampleDirPath + "/" + SPEECH_FEMALE_MODEL_NAME,this);
+		Utils.copyFromAssetsToSdcard(false, "english/"+SPEECH_MALE_MODEL_NAME, mSampleDirPath + "/" + SPEECH_MALE_MODEL_NAME,this);
+		Utils.copyFromAssetsToSdcard(false, "english/"+TEXT_MODEL_NAME, mSampleDirPath + "/" + TEXT_MODEL_NAME,this);
+	//	Utils.copyFromAssetsToSdcard(false, LICENSE_FILE_NAME, mSampleDirPath + "/" + LICENSE_FILE_NAME,this);
 		Utils.copyFromAssetsToSdcard(false, "english/" + ENGLISH_SPEECH_FEMALE_MODEL_NAME, mSampleDirPath + "/"
 				+ ENGLISH_SPEECH_FEMALE_MODEL_NAME,this);
 		Utils.copyFromAssetsToSdcard(false, "english/" + ENGLISH_SPEECH_MALE_MODEL_NAME, mSampleDirPath + "/"
 				+ ENGLISH_SPEECH_MALE_MODEL_NAME,this);
 		Utils.copyFromAssetsToSdcard(false, "english/" + ENGLISH_TEXT_MODEL_NAME, mSampleDirPath + "/"
 				+ ENGLISH_TEXT_MODEL_NAME,this);
+
+
+			runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					initialTts();
+				}
+			});
+
+
 	}
 
 	private void initialTts() {
@@ -1167,8 +1177,8 @@ public class VlcVideoActivity3 extends BaseActivity implements SpeechSynthesizer
 				+ SPEECH_FEMALE_MODEL_NAME);
 		// 本地授权文件路径,如未设置将使用默认路径.设置临时授权文件路径，LICENCE_FILE_NAME请替换成临时授权文件的实际路径，仅在使用临时license文件时需要进行设置，如果在[应用管理]中开通了正式离线授权，不需要设置该参数，建议将该行代码删除（离线引擎）
 		// 如果合成结果出现临时授权文件将要到期的提示，说明使用了临时授权文件，请删除临时授权即可。
-		//this.mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_LICENCE_FILE, mSampleDirPath + "/"
-			//	+ LICENSE_FILE_NAME);
+		this.mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_LICENCE_FILE, mSampleDirPath + "/"
+				+ LICENSE_FILE_NAME);
 		// 请替换为语音开发者平台上注册应用得到的App ID (离线授权)
 		this.mSpeechSynthesizer.setAppId("9990556"/*这里只是为了让Demo运行使用的APPID,请替换成自己的id。*/);
 		// 请替换为语音开发者平台注册应用得到的apikey和secretkey (在线授权)
@@ -1186,19 +1196,28 @@ public class VlcVideoActivity3 extends BaseActivity implements SpeechSynthesizer
 		AuthInfo authInfo = this.mSpeechSynthesizer.auth(TtsMode.MIX);
 
 		if (authInfo.isSuccess()) {
+			Log.d(TAG, "auth success");
 			toPrint("auth success");
 		} else {
 			String errorMsg = authInfo.getTtsError().getDetailMessage();
+			Log.d(TAG, errorMsg+"ff");
 			toPrint("auth failed errorMsg=" + errorMsg);
 		}
 
-		// 初始化tts
-		mSpeechSynthesizer.initTts(TtsMode.MIX);
-		// 加载离线英文资源（提供离线英文合成功能）
-		int result =
-				mSpeechSynthesizer.loadEnglishModel(mSampleDirPath + "/" + ENGLISH_TEXT_MODEL_NAME, mSampleDirPath
-						+ "/" + ENGLISH_SPEECH_FEMALE_MODEL_NAME);
-		toPrint("loadEnglishModel result=" + result);
+		if (mSpeechSynthesizer!=null){
+			// 初始化tts
+			mSpeechSynthesizer.initTts(TtsMode.MIX);
+			// 加载离线英文资源（提供离线英文合成功能）
+			int result =
+					mSpeechSynthesizer.loadEnglishModel(mSampleDirPath + "/" + ENGLISH_TEXT_MODEL_NAME, mSampleDirPath
+							+ "/" + ENGLISH_SPEECH_FEMALE_MODEL_NAME);
+			toPrint("loadEnglishModel result=" + result);
+
+			Log.d(TAG, "ddddoooooooo"+result);
+			mSpeechSynthesizer.speak("dddddd");
+
+		}
+
 
 	}
 
@@ -2593,6 +2612,8 @@ public class VlcVideoActivity3 extends BaseActivity implements SpeechSynthesizer
 
 				@Override
 				public void onClose(int i, String s, boolean b) {
+
+
 					runOnUiThread(new Runnable() {
 						@Override
 						public void run() {
